@@ -1,27 +1,95 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
+    /* Base Options */
+    "target": "ES2022", // Modern JavaScript target for latest features
+    "lib": ["DOM", "DOM.Iterable", "ES2022"], // Available APIs and language features
+    "allowJs": true, // Allow JavaScript files alongside TypeScript
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "strict": true, // Enable all strict type checking options
+    "noEmit": true, // Don't emit files (Next.js handles this)
+    "esModuleInterop": true, // Enable interop between CommonJS and ES modules
+    "module": "ESNext", // Use modern ES modules
+    "moduleResolution": "bundler", // Use bundler resolution for better compatibility
+    "resolveJsonModule": true, // Allow importing JSON files as modules
+    "isolatedModules": true, // Ensure each file can be safely transpiled
+    "jsx": "preserve", // Keep JSX for Next.js processing
+    "incremental": true, // Enable incremental compilation for faster builds
+
+    /* Next.js 15 specific */
     "plugins": [
       {
-        "name": "next"
+        "name": "next" // Next.js TypeScript plugin for optimizations
       }
     ],
+
+    /* Path Mapping for our modular architecture */
+    "baseUrl": ".", // Base directory for module resolution
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"], // Root source directory
+      "@/components/*": ["./src/components/*"], // Reusable UI components
+      "@/modules/*": ["./src/modules/*"], // Feature-based modules
+      "@/lib/*": ["./src/lib/*"], // Utility libraries and helpers
+      "@/hooks/*": ["./src/hooks/*"], // Custom React hooks
+      "@/store/*": ["./src/store/*"], // State management (Zustand)
+      "@/types/*": ["./src/types/*"], // TypeScript type definitions
+      "@/constants/*": ["./src/constants/*"], // Application constants
+      "@/middleware/*": ["./src/middleware/*"], // Request/response middleware
+      "@/jobs/*": ["./src/jobs/*"], // Background job processors
+      "@/events/*": ["./src/events/*"], // Event handlers and emitters
+      "@/security/*": ["./src/security/*"], // Security utilities and validations
+      "@/utils/*": ["./src/lib/utils"] // General utility functions
+    },
+
+    /* Strict Type-Checking Options */
+    "noImplicitAny": true, // Error on expressions with implied 'any' type
+    "strictNullChecks": true, // Enable strict null checking
+    "strictFunctionTypes": true, // Enable strict function type checking
+    "strictBindCallApply": true, // Enable strict checking of bind/call/apply
+    "strictPropertyInitialization": true, // Ensure class properties are initialized
+    "noImplicitThis": true, // Error on 'this' expressions with implied 'any' type
+    "alwaysStrict": true, // Always emit 'use strict' and check for strict mode
+
+    /* Additional Checks */
+    "noUnusedLocals": true, // Error on unused local variables
+    "noUnusedParameters": true, // Error on unused parameters
+    "exactOptionalPropertyTypes": true, // Enable exact optional property types
+    "noImplicitReturns": true, // Error on code paths that don't return
+    "noFallthroughCasesInSwitch": true, // Error on fallthrough cases in switch statements
+    "noUncheckedIndexedAccess": true, // Add undefined to index signature results
+    "noImplicitOverride": true, // Require explicit override keyword
+    "noPropertyAccessFromIndexSignature": false, // Allow property access from index signatures
+
+    /* Module Resolution */
+    "forceConsistentCasingInFileNames": true, // Ensure consistent file naming
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+
+    /* Emit Options */
+    "declaration": false, // Don't generate declaration files (Next.js handles this)
+    "declarationMap": false, // Don't generate declaration source maps
+    "sourceMap": true, // Generate source maps for debugging
+    "outDir": "./dist", // Output directory (for reference only)
+    "removeComments": false, // Keep comments in output
+    "importHelpers": true, // Import helper functions from tslib
+
+    /* Advanced Options */
+    "suppressImplicitAnyIndexErrors": false, // Don't suppress implicit any index errors
+    "allowUnusedLabels": false, // Error on unused labels
+    "allowUnreachableCode": false // Error on unreachable code
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"], // Files to include in compilation
+  "exclude": [
+    "node_modules", // Exclude dependencies
+    ".next", // Exclude Next.js build output
+    "out", // Exclude static export output
+    "dist", // Exclude distribution build
+    "**/*.test.ts", // Exclude test files
+    "**/*.test.tsx", // Exclude React test files
+    "**/*.spec.ts", // Exclude spec files
+    "**/*.spec.tsx" // Exclude React spec files
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS" // Use CommonJS for ts-node (development tools)
+    }
+  }
 }
