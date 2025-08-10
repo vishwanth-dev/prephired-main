@@ -27,7 +27,7 @@
     "paths": {
       "@/*": ["./src/*"], // Root source directory
       "@/components/*": ["./src/components/*"], // Reusable UI components
-      "@/modules/*": ["./src/modules/*"], // Feature-based modules
+      "@/modules/*": ["src/features/*"], // Feature-based modules
       "@/lib/*": ["./src/lib/*"], // Utility libraries and helpers
       "@/hooks/*": ["./src/hooks/*"], // Custom React hooks
       "@/store/*": ["./src/store/*"], // State management (Zustand)

@@ -1,7 +1,8 @@
+import { AuthLayout } from '@/components/templates/Layouts/AuthLayout/AuthLayout';
 import React from 'react';
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
-  return <div>{children}</div>;
+const AuthLayoutWrapper = ({ children }: { children: React.ReactNode }) => {
+  return <AuthLayout>{children}</AuthLayout>;
 };
 
-export default AuthLayout;
+export default AuthLayoutWrapper;

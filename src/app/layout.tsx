@@ -1,15 +1,16 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import { Poppins } from 'next/font/google';
+import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] })
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export const metadata: Metadata = {
   title: {
     default: 'prepAI - AI-Powered Voice Interviews',
     template: '%s | prepAI',
   },
-  description: 'Conduct AI-driven, real-time voice interviews with dynamic question generation derived directly from candidate resumes.',
+  description:
+    'Conduct AI-driven, real-time voice interviews with dynamic question generation derived directly from candidate resumes.',
   keywords: [
     'AI interviews',
     'voice interviews',
@@ -66,23 +67,17 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
     creator: '@prepai',
   },
-}
+};
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <head />
-      <body className={inter.className}>
-        <div id="root">
-          {children}
-        </div>
-        <div id="modal-root" />
-        <div id="toast-root" />
+      <body className={poppins.className}>
+        <div id='root'>{children}</div>
+        <div id='modal-root' />
+        <div id='toast-root' />
       </body>
     </html>
-  )
+  );
 }

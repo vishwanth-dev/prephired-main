@@ -1,7 +1,5 @@
 'use client';
 
-import { LandingPage } from '@/modules/landing-page';
-
 export default function LandingPageRoute() {
-  return <LandingPage />;
+  return <h1>Landing Page</h1>;
 }
