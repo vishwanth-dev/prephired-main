@@ -13,6 +13,8 @@ import type {
   ForgotPasswordForm,
   ResetPasswordForm,
   VerifyEmailForm,
+  RoleSelectionCommand,
+  UserRole,
 } from './entities';
 
 import {
@@ -366,4 +368,67 @@ export const generateInitials = (firstName: string, lastName: string): string =>
   const first = firstName.charAt(0).toUpperCase();
   const last = lastName.charAt(0).toUpperCase();
   return `${first}${last}`;
+};
+
+// =============================================================================
+// ROLE SELECTION RULES
+// =============================================================================
+
+export const VALID_USER_ROLES: readonly UserRole[] = [
+  'student',
+  'employee',
+  'university',
+  'company',
+] as const;
+
+export const isValidUserRole = (role: string): role is UserRole => {
+  return VALID_USER_ROLES.includes(role as UserRole);
+};
+
+export const validateRoleSelection = (command: RoleSelectionCommand): ValidationResult => {
+  const errors: Error[] = [];
+
+  try {
+    if (!command.selectedRole) {
+      errors.push(new Error('Role selection is required'));
+    } else if (!isValidUserRole(command.selectedRole)) {
+      errors.push(new Error('Invalid role selected'));
+    }
+
+    return errors.length === 0 ? { isValid: true } : { isValid: false, errors };
+  } catch (error) {
+    if (error instanceof Error) {
+      errors.push(error);
+    }
+    return { isValid: false, errors };
+  }
+};
+
+export const getRoleCategory = (role: UserRole): 'individual' | 'institutional' | 'enterprise' => {
+  switch (role) {
+    case 'student':
+    case 'employee':
+      return 'individual';
+    case 'university':
+      return 'institutional';
+    case 'company':
+      return 'enterprise';
+    default:
+      return 'individual';
+  }
+};
+
+export const getRoleRedirectPath = (role: UserRole): string => {
+  switch (role) {
+    case 'student':
+      return '/dashboard/student';
+    case 'employee':
+      return '/dashboard/employee';
+    case 'university':
+      return '/dashboard/university';
+    case 'company':
+      return '/dashboard/company';
+    default:
+      return '/dashboard';
+  }
 };

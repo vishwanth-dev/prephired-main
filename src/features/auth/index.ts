@@ -14,15 +14,22 @@
 // Forms
 export { LoginForm } from './components/forms/LoginForm';
 export { RegistrationForm } from './components/forms/RegistrationForm';
+export { SelectRoleForm } from './components/forms/SelectRoleForm';
 
 // Inputs
 export { PasswordInput } from './components/inputs/PasswordInput';
 
 // Display
 export { PasswordStrengthMeter } from './components/display/PasswordStrengthMeter';
+export { RoleSelectionHeader } from './components/display/RoleSelectionHeader';
+export { RoleSelectionGrid } from './components/display/RoleSelectionGrid';
 
 // Layout
 export { AuthForm } from './components/layout/AuthForm';
+export { RoleSelectionLayout } from './components/layout/RoleSelectionLayout';
+
+// Cards
+export { RoleCard } from './components/cards/RoleCard';
 
 // Containers
 export { RegisterContainer } from './containers/RegisterContainer';
@@ -38,6 +45,7 @@ export { useRegisterForm } from './hooks/forms/useRegisterForm';
 // State hooks
 export { useAuthState } from './hooks/state/useAuthState';
 export { useUserState } from './hooks/state/useUserState';
+export { useRoleSelection } from './hooks/state/useRoleSelection';
 
 // =============================================================================
 // STORES
@@ -54,6 +62,13 @@ export { useTenantStore } from './store/tenantStore';
 export { authBusinessService as authService } from './services/business/authService';
 export { userService } from './services/business/userService';
 export { validationService } from './services/business/validationService';
+export { roleSelectionService } from './services/business/roleSelectionService';
+
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
+export { ROLE_OPTIONS, getRoleOptionById, getRolesByCategory } from './constants/roleData';
 
 // =============================================================================
 // SCHEMAS

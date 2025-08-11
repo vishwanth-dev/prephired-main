@@ -22,11 +22,46 @@ export type Metadata = Record<string, unknown>;
 // ENUMS
 // =============================================================================
 
-export type UserRole = 'admin' | 'user' | 'candidate';
+export type UserRole =
+  | 'admin'
+  | 'user'
+  | 'candidate'
+  | 'student'
+  | 'employee'
+  | 'university'
+  | 'company';
 export type UserStatus = 'active' | 'inactive' | 'pending';
 export type TenantStatus = 'active' | 'inactive';
 export type AuthLoadingState = 'idle' | 'loading' | 'success' | 'error';
 export type LoginMethod = 'email' | 'phone' | 'oauth' | 'sso';
+
+// =============================================================================
+// ROLE SELECTION ENTITIES
+// =============================================================================
+
+export interface RoleOption {
+  readonly id: UserRole;
+  readonly title: string;
+  readonly description: string;
+  readonly icon: string;
+  readonly category: 'individual' | 'institutional' | 'enterprise';
+}
+
+export interface RoleSelectionCommand {
+  readonly selectedRole: UserRole;
+  readonly userId?: UserId;
+  readonly sessionId?: SessionId;
+}
+
+export interface RoleSelectionResult {
+  readonly success: boolean;
+  readonly selectedRole: UserRole;
+  readonly redirectTo?: string;
+  readonly error?: {
+    readonly code: string;
+    readonly message: string;
+  };
+}
 
 // =============================================================================
 // CORE ENTITIES
