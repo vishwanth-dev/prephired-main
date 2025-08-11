@@ -142,6 +142,7 @@ export const ROUTE_PATTERNS = {
     '/login',
     '/register',
     '/forgot-password',
+    '/select-role',
     '/reset-password',
     '/verify-email',
     '/sso/(.+)',
