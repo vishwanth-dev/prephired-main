@@ -1,23 +1,46 @@
+// ===========================================
+// Registration Form Schema
+// ===========================================
 import { z } from 'zod';
-import { countryCodeSchema, rawPhoneSchema, emailSchema, passwordSchema } from './shared';
 
-/**
- * UI Registration Form (maps to domain RegisterForm)
- */
-export const registerFormSchema = z
+export const registerSchema = z
   .object({
-    firstName: z.string().trim().min(1, 'First name is required'),
-    lastName: z.string().trim().min(1, 'Last name is required'),
-    countryCode: countryCodeSchema, // "+91" etc.
-    phoneNumber: rawPhoneSchema, // raw; normalized in rules
-    email: emailSchema, // lowercasing happens in rules
-    password: passwordSchema,
-    confirmPassword: z.string(),
-    acceptedTerms: z.boolean().refine(v => v === true, 'You must accept the Terms'),
+    firstName: z
+      .string()
+      .min(1, 'First name is required')
+      .min(2, 'First name must be at least 2 characters'),
+
+    lastName: z
+      .string()
+      .min(1, 'Last name is required')
+      .min(2, 'Last name must be at least 2 characters'),
+
+    email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
+
+    phone: z
+      .string()
+      .min(10, 'Phone number is required')
+      .regex(/^\+?[1-9]\d{1,14}$/, 'Please enter a valid phone number'),
+
+    password: z
+      .string()
+      .min(1, 'Password is required')
+      .min(8, 'Password must be at least 8 characters'),
+
+    confirmPassword: z.string().min(1, 'Please confirm your password'),
+
+    acceptTerms: z
+      .boolean()
+      .refine(val => val === true, 'You must accept the terms and conditions'),
+
+    acceptPrivacy: z.boolean().optional(),
+    marketingEmails: z.boolean().optional(),
+    tenantSlug: z.string().optional(),
+    invitationToken: z.string().optional(),
   })
-  .refine(v => v.password === v.confirmPassword, {
-    path: ['confirmPassword'],
+  .refine(data => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
+    path: ['confirmPassword'],
   });
 
-export type RegisterFormInput = z.infer<typeof registerFormSchema>;
+export type RegisterFormData = z.infer<typeof registerSchema>;

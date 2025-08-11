@@ -1,340 +1,266 @@
 /**
- * Public Type Exports for Authentication Feature
- *
- * This is the main type entry point that other modules/features should import from.
- * Re-exports all public types from domain, UI, and API layers.
+ * Authentication Feature Types - Main Export
+ * 
+ * This file serves as the main entry point for all authentication types.
+ * It re-exports domain entities and provides shared utility types.
  */
 
 // =============================================================================
-// DOMAIN TYPES (Public API)
+// RE-EXPORT DOMAIN ENTITIES (SINGLE SOURCE OF TRUTH)
 // =============================================================================
 
-// Core entities and value objects
+// Core domain entities
 export type {
   User,
+  UserProfile,
   Tenant,
-  ClientSession,
-  TenantSettings,
-  TenantSubscription,
-  PasswordPolicy,
-} from '../domain/entities';
-
-// Type aliases for safety
-export type { UserId, TenantId, Email, PhoneNumber } from '../domain/entities';
-
-// Enums and union types
-export type { UserRole, LoginMethod } from '../domain/entities';
-
-// Domain commands (inputs)
-export type {
+  Session,
+  AuthState,
+  LoginForm,
+  RegisterForm,
+  ForgotPasswordForm,
+  ResetPasswordForm,
+  VerifyEmailForm,
   RegisterUserCommand,
   LoginCredentials,
-  NormalizedLoginCredentials,
-  ResetPasswordCommand,
-  ChangePasswordCommand,
-  UpdateProfileCommand,
-  ForgotPasswordCommand,
-  VerifyEmailCommand,
-  ResendVerificationCommand,
+  AuthResult,
+  AuthLoadingState,
+  UserRole,
+  UserStatus,
+  TenantStatus,
+  Timestamp,
+  Url,
+  Metadata,
+  UserId,
+  TenantId,
+  SessionId,
+  Email,
+  PhoneNumber,
 } from '../domain/entities';
 
-// Domain events (outputs)
-export type {
-  DomainEvent,
-  UserRegisteredEvent,
-  UserLoggedInEvent,
-  UserLoggedOutEvent,
-  PasswordChangedEvent,
-  EmailVerifiedEvent,
-  PhoneVerifiedEvent,
-} from '../domain/entities';
+// =============================================================================
+// RE-EXPORT DOMAIN ERRORS
+// =============================================================================
 
-// Extended domain events
-export type {
-  ExtendedDomainEvent,
-  UserCreatedEvent,
-  UserUpdatedEvent,
-  UserDeletedEvent,
-  LoginAttemptedEvent,
-  LoginFailedEvent,
-  SessionCreatedEvent,
-  SessionExpiredEvent,
-  TenantCreatedEvent,
-  SuspiciousActivityDetectedEvent,
-  SecurityViolationEvent,
-} from '../domain/events';
-
-// Domain errors (for error handling)
 export {
   AuthDomainError,
   ValidationError,
   BusinessRuleError,
-  InvalidCredentialsError,
-  SessionExpiredError,
-  UserAlreadyExistsError,
-  WeakPasswordError,
-  PasswordMismatchError,
+  SecurityViolationError,
   InvalidEmailError,
   InvalidPhoneNumberError,
+  WeakPasswordError,
+  PasswordMismatchError,
+  TermsNotAcceptedError,
+  PrivacyPolicyNotAcceptedError,
+  InvalidNameFormatError,
+  UserNotFoundError,
+  UserAlreadyExistsError,
+  InvalidCredentialsError,
   AccountLockedError,
+  EmailNotVerifiedError,
+  PhoneNotVerifiedError,
+  InvalidVerificationTokenError,
+  VerificationTokenExpiredError,
+  ResetTokenInvalidError,
+  ResetTokenExpiredError,
+  ResetTokenAlreadyUsedError,
+  OtpInvalidError,
+  OtpExpiredError,
+  OtpTooManyAttemptsError,
+  SessionExpiredError,
+  SessionNotFoundError,
+  TooManyActiveSessionsError,
   TenantNotFoundError,
+  TenantAccessDeniedError,
   InsufficientPermissionsError,
+  InvalidRoleError,
+  RateLimitExceededError,
+  SuspiciousActivityError,
+  DatabaseError,
+  ExternalServiceError,
+  ConfigurationError,
 } from '../domain/errors';
 
 // =============================================================================
-// UI TYPES (Client-side state and forms)
+// RE-EXPORT DOMAIN EVENTS
 // =============================================================================
 
 export type {
-  AuthState,
-  AuthActions,
-  AuthStore,
-  LoginFormState,
-  RegisterFormState,
-  ForgotPasswordFormState,
-  ResetPasswordFormState,
-  AuthPersistState,
-  AuthConfig,
-} from '@/features/auth/types/ui.types';
+  BaseEvent,
+  UserRegisteredEvent,
+  UserLoggedInEvent,
+  UserLoggedOutEvent,
+  PasswordChangedEvent,
+  PasswordResetRequestedEvent,
+  PasswordResetCompletedEvent,
+  EmailVerifiedEvent,
+  PhoneVerifiedEvent,
+  SessionCreatedEvent,
+  SessionExpiredEvent,
+  TenantCreatedEvent,
+  TenantContextSwitchedEvent,
+  LoginFailedEvent,
+  AccountLockedEvent,
+  SuspiciousActivityEvent,
+  AuthEvent,
+  AuthEventType,
+} from '../domain/events';
+
+export {
+  createAuthEvent,
+  isSecurityEvent,
+  isUserEvent,
+  isSessionEvent,
+  isTenantEvent,
+} from '../domain/events';
 
 // =============================================================================
-// API TYPES (Server communication)
+// RE-EXPORT DOMAIN RULES AND SELECTORS
 // =============================================================================
 
-export type {
-  // Request types
-  LoginRequest,
-  RegisterRequest,
-  ForgotPasswordRequest,
-  ResetPasswordRequest,
-  ChangePasswordRequest,
-  UpdateProfileRequest,
-  VerifyEmailRequest,
-  ResendVerificationRequest,
+export type { ValidationResult } from '../domain/rules';
 
-  // Response types
-  AuthResponse,
-  SessionResponse,
-  UserResponse,
-  TenantResponse,
-  ErrorResponse,
+export {
+  validateRegistrationForm,
+  validateLoginForm,
+  validatePassword,
+  assessPasswordStrength,
+  isValidEmail,
+  isValidPhoneNumber,
+  normalizePhoneToE164,
+  toRegisterUserCommand,
+  toLoginCredentials,
+  sanitizeEmail,
+  sanitizePhone,
+  generateDisplayName,
+  generateInitials,
+} from '../domain/rules';
 
-  // Pagination and filtering
-  UserListRequest,
-  UserListResponse,
-  TenantListRequest,
-  TenantListResponse,
-
-  // Analytics and reporting
-  AnalyticsRequest,
-  AnalyticsResponse,
-
-  // Audit and security
-  AuditLogRequest,
-  AuditLogResponse,
-  SecurityEventRequest,
-  SecurityEventResponse,
-} from './api.types';
-
-// =============================================================================
-// SERVER TYPES (Server-side only - imported from session.types.ts)
-// =============================================================================
-
-export type {
-  ServerSession,
-  AccessTokenPayload,
-  RefreshTokenPayload,
-  SessionRecord,
-  AuthContext,
-  ProtectedRouteContext,
-  AuthProvider,
-  OAuthUserProfile,
-  LoginAttempt,
-  SecurityEvent,
-  SecurityEventType,
-  RateLimitConfig,
-  RateLimitState,
-} from '@/features/auth/store/session.types';
+export {
+  selectAuthUser,
+  selectUserDisplayName,
+  selectUserInitials,
+  selectUserEmail,
+  selectUserPhone,
+  selectUserAvatar,
+  selectUserRoles,
+  selectUserPermissions,
+  selectIsUserVerified,
+  selectIsAuthenticated,
+  selectAuthLoadingState,
+  selectIsLoading,
+  selectAuthError,
+  selectEmailVerificationRequired,
+  selectCurrentSession,
+  selectSessionId,
+  selectSessionExpiry,
+  selectIsSessionExpired,
+  selectCurrentTenant,
+  selectAvailableTenants,
+  selectTenantName,
+  selectTenantSlug,
+  selectHasMultipleTenants,
+  selectCanSwitchTenant,
+  selectUserProfile,
+  selectAuthSummary,
+  selectLastUpdated,
+  selectIsStale,
+  createSafeSelector,
+  createMemoizedSelector,
+} from '../domain/selectors';
 
 // =============================================================================
-// UTILITY TYPES
+// SHARED UTILITY TYPES
 // =============================================================================
 
 /**
- * Extract the payload type from an API response
+ * Generic field error for form validation
  */
-export type ApiPayload<T> = T extends { data: infer P } ? P : never;
+export interface FieldError {
+  readonly field: string;
+  readonly message: string;
+  readonly code?: string;
+}
 
 /**
- * Make all properties optional except specified keys
+ * Collection of field errors
  */
-export type PartialExcept<T, K extends keyof T> = Partial<T> & Pick<T, K>;
+export interface FormErrors {
+  readonly [field: string]: FieldError;
+}
 
 /**
- * Make all properties required except specified keys
- */
-export type RequiredExcept<T, K extends keyof T> = Required<T> & Partial<Pick<T, K>>;
-
-/**
- * Extract non-undefined keys from a type
- */
-export type NonUndefined<T> = {
-  [K in keyof T]-?: T[K] extends undefined ? never : K;
-}[keyof T];
-
-/**
- * Create a type with only the non-undefined properties
- */
-export type DefinedProperties<T> = Pick<T, NonUndefined<T>>;
-
-/**
- * Form field error type
- */
-export type FieldError = {
-  message: string;
-  type?: string;
-};
-
-/**
- * Form errors object
- */
-export type FormErrors<T> = Partial<Record<keyof T, FieldError>>;
-
-/**
- * API loading state
+ * Generic loading state
  */
 export type LoadingState = 'idle' | 'loading' | 'success' | 'error';
 
 /**
- * Pagination metadata
+ * Generic API response wrapper
  */
-export type PaginationMeta = {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrev: boolean;
-};
+export interface ApiResponse<T = unknown> {
+  readonly success: boolean;
+  readonly data?: T;
+  readonly error?: string;
+  readonly message?: string;
+}
 
 /**
- * Sort order
+ * Pagination metadata
  */
-export type SortOrder = 'asc' | 'desc';
+export interface PaginationMeta {
+  readonly page: number;
+  readonly limit: number;
+  readonly total: number;
+  readonly totalPages: number;
+  readonly hasNext: boolean;
+  readonly hasPrev: boolean;
+}
+
+/**
+ * Paginated response wrapper
+ */
+export interface PaginatedResponse<T> extends ApiResponse<T[]> {
+  readonly pagination: PaginationMeta;
+}
 
 /**
  * Sort configuration
  */
-export type SortConfig<T> = {
-  field: keyof T;
-  order: SortOrder;
-};
+export interface SortConfig {
+  readonly field: string;
+  readonly direction: 'asc' | 'desc';
+}
 
 /**
  * Filter configuration
  */
-export type FilterConfig<T> = Partial<{
-  [K in keyof T]: T[K] | T[K][] | { min?: T[K]; max?: T[K] };
-}>;
+export interface FilterConfig {
+  readonly field: string;
+  readonly operator: 'eq' | 'ne' | 'gt' | 'gte' | 'lt' | 'lte' | 'in' | 'nin' | 'like' | 'regex';
+  readonly value: unknown;
+}
 
 /**
- * Search and filter parameters
+ * Query parameters for API calls
  */
-export type SearchParams<T> = {
-  query?: string;
-  filters?: FilterConfig<T>;
-  sort?: SortConfig<T>;
-  pagination?: {
-    page: number;
-    limit: number;
-  };
-};
-
-// =============================================================================
-// CONSTANTS AND DEFAULTS
-// =============================================================================
+export interface QueryParams {
+  readonly page?: number;
+  readonly limit?: number;
+  readonly sort?: SortConfig[];
+  readonly filters?: FilterConfig[];
+  readonly search?: string;
+  readonly include?: string[];
+}
 
 /**
- * Default pagination settings
+ * Generic result wrapper
  */
-export const DEFAULT_PAGINATION = {
-  page: 1,
-  limit: 20,
-} as const;
+export type Result<T, E = Error> =
+  | { readonly success: true; readonly data: T }
+  | { readonly success: false; readonly error: E };
 
 /**
- * Maximum pagination limit
+ * Async result wrapper
  */
-export const MAX_PAGINATION_LIMIT = 100 as const;
-
-/**
- * Default sort order
- */
-export const DEFAULT_SORT_ORDER: SortOrder = 'desc' as const;
-
-/**
- * Common date formats
- */
-export const DATE_FORMATS = {
-  ISO: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
-  DATE_ONLY: 'YYYY-MM-DD',
-  TIME_ONLY: 'HH:mm:ss',
-  DISPLAY: 'MMM DD, YYYY',
-  DISPLAY_WITH_TIME: 'MMM DD, YYYY HH:mm',
-} as const;
-
-/**
- * HTTP status codes commonly used in auth
- */
-export const HTTP_STATUS = {
-  OK: 200,
-  CREATED: 201,
-  NO_CONTENT: 204,
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  CONFLICT: 409,
-  UNPROCESSABLE_ENTITY: 422,
-  TOO_MANY_REQUESTS: 429,
-  INTERNAL_SERVER_ERROR: 500,
-} as const;
-
-/**
- * Auth-related localStorage keys
- */
-export const STORAGE_KEYS = {
-  REMEMBER_ME: 'auth.rememberMe',
-  LAST_LOGIN_EMAIL: 'auth.lastLoginEmail',
-  LAST_LOGIN_PHONE: 'auth.lastLoginPhone',
-  THEME_PREFERENCE: 'auth.themePreference',
-  LANGUAGE_PREFERENCE: 'auth.languagePreference',
-} as const;
-
-/**
- * Session timeout warning thresholds (in minutes)
- */
-export const SESSION_WARNING_THRESHOLDS = {
-  CRITICAL: 5,
-  WARNING: 15,
-  INFO: 30,
-} as const;
-
-/**
- * Password strength levels
- */
-export const PASSWORD_STRENGTH_LEVELS = {
-  WEAK: 'weak',
-  FAIR: 'fair',
-  GOOD: 'good',
-  STRONG: 'strong',
-} as const;
-
-/**
- * Login attempt limits
- */
-export const LOGIN_LIMITS = {
-  MAX_ATTEMPTS: 5,
-  LOCKOUT_DURATION_MINUTES: 30,
-  RATE_LIMIT_WINDOW_MINUTES: 15,
-} as const;
+export type AsyncResult<T, E = Error> = Promise<Result<T, E>>;

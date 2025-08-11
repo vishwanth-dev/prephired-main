@@ -7,7 +7,7 @@ import { emailOrPhoneSchema } from './shared';
 export const loginFormSchema = z.object({
   emailOrPhone: emailOrPhoneSchema,
   password: z.string().min(1, 'Password is required'),
-  rememberMe: z.boolean().optional(), // rules will coerce to boolean with ?? false
+  rememberMe: z.boolean().optional(),
 });
 
 export type LoginFormInput = z.infer<typeof loginFormSchema>;

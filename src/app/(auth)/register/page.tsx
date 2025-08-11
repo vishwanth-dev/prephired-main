@@ -1,9 +1,12 @@
-'use client';
-
+import { Metadata } from 'next';
 import React from 'react';
+import { RegisterContainer } from '@/features/auth/containers/RegisterContainer';
 
-const RegisterPage = () => {
-  return <h1>Register Page</h1>;
+export const metadata: Metadata = {
+  title: 'Create Account - prepAI',
+  description: 'Join prepAI and start your AI-powered interview preparation journey',
 };
 
-export default RegisterPage;
+export default function RegisterPage() {
+  return <RegisterContainer />;
+}

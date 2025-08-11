@@ -1,10 +1,5 @@
-'use client';
+import { LoginForm } from '@/features/auth/components/forms/LoginForm';
 
-import React from 'react';
-
-
-const LoginPage = () => {
-  return <h1>Login Page</h1>;
-};
-
-export default LoginPage;
+export default function LoginPage() {
+  return <LoginForm />;
+}
