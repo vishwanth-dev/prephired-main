@@ -252,6 +252,10 @@ export const validateLoginForm = (form: LoginForm): ValidationResult => {
       errors.push(new Error('Password is required'));
     }
 
+    if (errors.length > 0) {
+      return { isValid: false, errors };
+    }
+
     return { isValid: true };
   } catch (error) {
     if (error instanceof Error) {
