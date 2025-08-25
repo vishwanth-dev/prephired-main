@@ -25,6 +25,13 @@ export const RegistrationForm: React.FC = () => {
     },
   });
 
+  // Manage visibility of the password strength tooltip.
+  // The previous implementation created this state inside the
+  // `render` callback of `FormField`, which violates the React
+  // Hooks rules by calling `useState` conditionally. Defining it
+  // here ensures the hook executes consistently on every render.
+  const [showTooltip, setShowTooltip] = React.useState(false);
+
   const onSubmit = (data: RegisterFormData) => {
     console.log(data);
     // Handle form submission
@@ -132,8 +139,6 @@ export const RegistrationForm: React.FC = () => {
               control={form.control}
               name='password'
               render={({ field }) => {
-                const [showTooltip, setShowTooltip] = React.useState(false);
-
                 return (
                   <FormItem className='relative'>
                     <FormControl>
