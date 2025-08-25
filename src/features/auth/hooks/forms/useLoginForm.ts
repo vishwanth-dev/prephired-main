@@ -24,7 +24,12 @@ export const useLoginForm = () => {
         password: data.password,
       });
       // Redirect logic handled by auth store or router
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Login failed:', error.message);
+      } else {
+        console.error('Login failed:', error);
+      }
       console.error('Login failed:', error);
       // Handle error state
     }

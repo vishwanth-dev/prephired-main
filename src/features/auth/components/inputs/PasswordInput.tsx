@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, forwardRef } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
 import { Input } from '@/components/atoms/input';
+import Image from 'next/image';
 
-interface PasswordInputProps {
+export interface PasswordInputProps {
   label: string;
   labelClassName?: string;
   required?: boolean;
@@ -14,11 +14,19 @@ interface PasswordInputProps {
   suffixIcon?: React.ReactNode;
   onFocus?: () => void;
   onBlur?: () => void;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  name?: string;
+  id?: string;
+  disabled?: boolean;
 }
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ label, required = false, onFocus, onBlur, ...props }, ref) => {
-    const [showPassword, setShowPassword] = useState(false);
+  (
+    { label, required = false, onFocus, onBlur, value, onChange, name, id, disabled, ...props },
+    ref
+  ) => {
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     return (
       <div className='flex flex-col gap-1 w-full'>
@@ -26,19 +34,26 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           ref={ref}
           label={label}
           type={showPassword ? 'text' : 'password'}
-          required={required ?? false}
+          required={required}
+          value={value}
+          onChange={onChange}
+          name={name}
+          id={id}
+          disabled={disabled}
           onFocus={onFocus}
           onBlur={onBlur}
           suffixIcon={
             <div
               onClick={() => setShowPassword(!showPassword)}
-              className='text-[#989898] hover:text-[#F0806C] hover:bg-transparent cursor-pointer'
+              className='text-support-text-color hover:text-primary hover:bg-transparent cursor-pointer'
             >
-              {showPassword ? (
-                <EyeOff className='w-6 h-6 text-[#989898]' />
-              ) : (
-                <Eye className='w-6 h-6 text-[#989898]' />
-              )}
+              <Image
+                src={`/images/icons/${showPassword ? 'Eye' : 'EyeOff'}.svg`}
+                alt='Show Password'
+                width={24}
+                height={24}
+                className='2xl:w-6 2xl:h-6 w-5 h-5'
+              />
             </div>
           }
           {...props}

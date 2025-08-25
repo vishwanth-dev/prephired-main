@@ -1,0 +1,87 @@
+{
+  "widget": {
+    "name": "prepAI Interview Widget",
+    "version": "1.0.0",
+    "description": "AI-powered voice interview widget for embedding on external websites",
+    "author": "prepAI",
+    "license": "MIT"
+  },
+  "features": {
+    "voiceInterviews": true,
+    "resumeAnalysis": true,
+    "realTimeTranscription": true,
+    "questionGeneration": true,
+    "analytics": true,
+    "multiTenant": true
+  },
+  "ui": {
+    "theme": "light",
+    "primaryColor": "#2563eb",
+    "secondaryColor": "#64748b",
+    "accentColor": "#8b5cf6",
+    "borderRadius": "8px",
+    "fontFamily": "Inter, system-ui, sans-serif"
+  },
+  "api": {
+    "baseUrl": "https://api.prepaid.com",
+    "endpoints": {
+      "interview": "/api/interviews",
+      "candidates": "/api/candidates",
+      "analytics": "/api/analytics",
+      "webhooks": "/api/webhooks"
+    },
+    "timeout": 30000
+  },
+  "security": {
+    "allowedOrigins": ["*"],
+    "corsEnabled": true,
+    "rateLimit": {
+      "maxRequests": 100,
+      "windowMs": 900000
+    }
+  },
+  "voice": {
+    "providers": ["murf", "elevenlabs", "playht", "azure"],
+    "defaultProvider": "murf",
+    "languages": ["en-US", "en-GB", "es-ES", "fr-FR", "de-DE"],
+    "defaultLanguage": "en-US"
+  },
+  "ai": {
+    "model": "gpt-4",
+    "maxTokens": 2000,
+    "temperature": 0.7,
+    "features": {
+      "questionGeneration": true,
+      "resumeAnalysis": true,
+      "sentimentAnalysis": true,
+      "skillExtraction": true
+    }
+  },
+  "storage": {
+    "maxFileSize": 10485760,
+    "allowedTypes": [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ],
+    "retentionDays": 90
+  },
+  "analytics": {
+    "enabled": true,
+    "tracking": {
+      "pageViews": true,
+      "interactions": true,
+      "performance": true,
+      "errors": true
+    },
+    "privacy": {
+      "anonymizeData": true,
+      "gdprCompliant": true
+    }
+  },
+  "notifications": {
+    "email": true,
+    "webhook": true,
+    "realTime": true
+  }
+}

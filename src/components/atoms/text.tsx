@@ -5,23 +5,74 @@
  */
 
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
-interface TextProps {
-  variant?: 'body' | 'caption' | 'label' | 'small';
+export interface TextProps {
+  variant?:
+    | 'body'
+    | 'body-large'
+    | 'body-small'
+    | 'lead'
+    | 'caption'
+    | 'small'
+    | 'body-t1'
+    | 'body-t2'
+    | 'body-t3'
+    | 'body-t4'
+    | 'input';
+  as?: 'p' | 'span' | 'div' | 'label';
+  weight?: 'normal' | 'medium' | 'semibold' | 'bold';
   className?: string;
   children: React.ReactNode;
 }
 
-export const Text: React.FC<TextProps> = ({ variant = 'body', className, children }) => {
-  const baseClasses = 'font-poppins leading-[1.5em]';
+const Text: React.FC<TextProps> = ({
+  variant = 'body',
+  as = 'p',
+  weight,
+  className,
+  children,
+  ...props
+}) => {
+  const Component = as;
 
+  // Typography classes based on WunderUI design system
   const variantClasses = {
-    body: 'text-base lg:text-lg font-normal',
-    caption: 'text-sm font-normal text-gray-600',
-    label: 'text-sm font-medium text-gray-700',
-    small: 'text-xs font-normal text-gray-500',
+    body: 'text-body',
+    'body-large': 'text-body-large',
+    'body-small': 'text-body-small',
+    lead: 'text-lead',
+    caption: 'text-caption',
+    small: 'text-sm',
+    'body-t1': 'text-body-t1',
+    'body-t2': 'text-body-t2',
+    'body-t3': 'text-body-t3',
+    'body-t4': 'text-body-t4',
+    input: 'text-input',
   };
 
-  return <p className={cn(baseClasses, variantClasses[variant], className)}>{children}</p>;
+  // Weight classes
+  const weightClasses = {
+    normal: 'font-normal',
+    medium: 'font-medium',
+    semibold: 'font-semibold',
+    bold: 'font-bold',
+  };
+
+  const classes = cn(
+    'font-sans',
+    variantClasses[variant],
+    weight && weightClasses[weight],
+    className
+  );
+
+  return (
+    <Component className={classes} {...props}>
+      {children}
+    </Component>
+  );
 };
+
+Text.displayName = 'Text';
+
+export default Text;

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from '@/components/atoms/button';
+
 
 export function Header() {
   return (
@@ -47,12 +47,12 @@ export function Header() {
           >
             Log In
           </Link>
-          <Button
+          {/* <Button
             asChild
             className='bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors'
           >
             <Link href='/register'>Get Started</Link>
-          </Button>
+          </Button> */}
         </div>
       </div>
     </header>

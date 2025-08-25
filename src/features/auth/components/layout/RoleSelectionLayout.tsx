@@ -13,7 +13,7 @@ interface RoleSelectionLayoutProps {
 
 export const RoleSelectionLayout: React.FC<RoleSelectionLayoutProps> = ({ children }) => {
   return (
-    <div className='min-h-screen bg-gradient-to-br from-white via-[#FFE8E5] to-[#FFF0E6] relative overflow-hidden'>
+    <div className=' w-full relative overflow-hidden'>
       {/* Background decorative elements */}
       <div className='absolute inset-0 pointer-events-none'>
         {/* Large circles */}
@@ -36,7 +36,7 @@ export const RoleSelectionLayout: React.FC<RoleSelectionLayoutProps> = ({ childr
 
       <div className='flex flex-col lg:flex-row min-h-screen'>
         {/* Right Section - Select Role Content */}
-        <div className='w-full bg-gradient-to-br from-white via-[#FFD3CB] to-[#FFD0BC] relative flex items-center justify-center min-h-[50vh] lg:min-h-screen'>
+        <div className='w-full bg-gradient-to-br from-white via-[#FFD3CB] to-[#FFD0BC] relative flex items-center justify-center min-h-[50vh] lg:min-h-screen mx-auto'>
           {children}
         </div>
       </div>

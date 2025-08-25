@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prepAI Widget API Test</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .test-section h2 {
+            margin-bottom: 1rem;
+            color: #fbbf24;
+        }
+
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .api-btn {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: left;
+        }
+
+        .api-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .api-btn.success {
+            background: rgba(34, 197, 94, 0.3);
+            border-color: #22c55e;
+        }
+
+        .api-btn.error {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: #ef4444;
+        }
+
+        .log-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .log-entry.info {
+            color: #60a5fa;
+        }
+
+        .log-entry.success {
+            color: #34d399;
+        }
+
+        .log-entry.error {
+            color: #f87171;
+        }
+
+        .log-entry.warning {
+            color: #fbbf24;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-indicator.ready {
+            background: #22c55e;
+        }
+
+        .status-indicator.loading {
+            background: #fbbf24;
+        }
+
+        .status-indicator.error {
+            background: #ef4444;
+        }
+
+        .candidate-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 14px;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            .candidate-form {
+                grid-template-columns: 1fr;
+            }
+
+            .api-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧪 prepAI Widget API Test</h1>
+
+        <!-- Widget Status -->
+        <div class="test-section">
+            <h2>Widget Status</h2>
+            <div id="widget-status">
+                <span class="status-indicator loading"></span>
+                <span>Loading widget...</span>
+            </div>
+            <div class="api-grid">
+                <button class="api-btn" onclick="checkWidgetStatus()">🔍 Check Status</button>
+                <button class="api-btn" onclick="getWidgetAnalytics()">📊 Get Analytics</button>
+                <button class="api-btn" onclick="getWidgetConfig()">⚙️ Get Config</button>
+            </div>
+        </div>
+
+        <!-- Widget Control -->
+        <div class="test-section">
+            <h2>Widget Control</h2>
+            <div class="api-grid">
+                <button class="api-btn" onclick="openWidget()">📖 Open Widget</button>
+                <button class="api-btn" onclick="closeWidget()">❌ Close Widget</button>
+                <button class="api-btn" onclick="toggleWidget()">🔄 Toggle Widget</button>
+            </div>
+        </div>
+
+        <!-- Interview Management -->
+        <div class="test-section">
+            <h2>Interview Management</h2>
+
+            <div class="candidate-form">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="candidate-name" placeholder="John Doe" value="Test Candidate">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="candidate-email" placeholder="john@example.com" value="test@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Position</label>
+                    <input type="text" id="candidate-position" placeholder="Software Engineer"
+                        value="Frontend Developer">
+                </div>
+                <div class="form-group">
+                    <label>Experience</label>
+                    <input type="text" id="candidate-experience" placeholder="3 years" value="5 years">
+                </div>
+            </div>
+
+            <div class="api-grid">
+                <button class="api-btn" onclick="startInterview()">🎤 Start Interview</button>
+                <button class="api-btn" onclick="startInterviewWithData()">📝 Start with Form Data</button>
+                <button class="api-btn" onclick="pauseInterview()">⏸️ Pause Interview</button>
+                <button class="api-btn" onclick="resumeInterview()">▶️ Resume Interview</button>
+                <button class="api-btn" onclick="endInterview()">⏹️ End Interview</button>
+            </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="test-section">
+            <h2>File Upload</h2>
+            <div class="api-grid">
+                <button class="api-btn" onclick="uploadResume()">📄 Upload Resume</button>
+                <button class="api-btn" onclick="uploadCustomFile()">📁 Upload Custom File</button>
+                <button class="api-btn" onclick="clearUploads()">🗑️ Clear Uploads</button>
+            </div>
+        </div>
+
+        <!-- Event Testing -->
+        <div class="test-section">
+            <h2>Event Testing</h2>
+            <div class="api-grid">
+                <button class="api-btn" onclick="testEvents()">🎯 Test All Events</button>
+                <button class="api-btn" onclick="clearEvents()">🧹 Clear Events</button>
+                <button class="api-btn" onclick="simulateInterviewComplete()">✅ Simulate Complete</button>
+            </div>
+        </div>
+
+        <!-- API Log -->
+        <div class="test-section">
+            <h2>API Log</h2>
+            <div class="log-container" id="api-log">
+                <div class="log-entry info">API test page loaded. Waiting for widget...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the prepAI Widget script -->
+    <script src="/widget/embed.js"></script>
+
+    <!-- Initialize widget -->
+    <div data-prepai='{
+        "theme": "light",
+        "primaryColor": "#059669",
+        "features": {
+            "voiceInterviews": true,
+            "resumeAnalysis": true,
+            "realTimeTranscription": true,
+            "questionGeneration": true,
+            "analytics": true
+        },
+        "debug": true
+    }'></div>
+
+    <script>
+        let widgetReady = false;
+        let eventCount = 0;
+
+        // Utility functions
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('api-log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function updateStatus(status, type = 'loading') {
+            const statusEl = document.getElementById('widget-status');
+            const indicator = statusEl.querySelector('.status-indicator');
+            const text = statusEl.querySelector('span:last-child');
+
+            indicator.className = `status-indicator ${type}`;
+            text.textContent = status;
+        }
+
+        // API Test Functions
+        function checkWidgetStatus() {
+            if (window.prepAIWidget) {
+                const analytics = window.prepAIWidget.getAnalytics();
+                log(`Widget Status: ${JSON.stringify(analytics)}`, 'success');
+                updateStatus('Widget Ready', 'ready');
+            } else {
+                log('Widget not available', 'error');
+                updateStatus('Widget Error', 'error');
+            }
+        }
+
+        function getWidgetAnalytics() {
+            if (window.prepAIWidget) {
+                const analytics = window.prepAIWidget.getAnalytics();
+                log(`Analytics: ${JSON.stringify(analytics, null, 2)}`, 'info');
+            } else {
+                log('Widget not available', 'error');
+            }
+        }
+
+        function getWidgetConfig() {
+            // This would typically come from the widget's internal config
+            log('Config: Widget configuration loaded', 'info');
+        }
+
+        function openWidget() {
+            if (window.prepAIWidget) {
+                window.prepAIWidget.open();
+                log('Widget opened', 'success');
+            } else {
+                log('Widget not available', 'error');
+            }
+        }
+
+        function closeWidget() {
+            if (window.prepAIWidget) {
+                window.prepAIWidget.close();
+                log('Widget closed', 'success');
+            } else {
+                log('Widget not available', 'error');
+            }
+        }
+
+        function toggleWidget() {
+            if (window.prepAIWidget) {
+                // This would need to be implemented in the widget
+                log('Toggle widget (not implemented)', 'warning');
+            } else {
+                log('Widget not available', 'error');
+            }
+        }
+
+        function startInterview() {
+            if (window.prepAIWidget) {
+                window.prepAIWidget.startInterview();
+                log('Interview started with default data', 'success');
+            } else {
+                log('Widget not available', 'error');
+            }
+        }
+
+        function startInterviewWithData() {
+            if (window.prepAIWidget) {
+                const candidateData = {
+                    name: document.getElementById('candidate-name').value,
+                    email: document.getElementById('candidate-email').value,
+                    position: document.getElementById('candidate-position').value,
+                    experience: document.getElementById('candidate-experience').value
+                };
+
+                window.prepAIWidget.startInterview(candidateData);
+                log(`Interview started with data: ${JSON.stringify(candidateData)}`, 'success');
+            } else {
+                log('Widget not available', 'error');
+            }
+        }
+
+        function pauseInterview() {
+            log('Pause interview (not implemented)', 'warning');
+        }
+
+        function resumeInterview() {
+            log('Resume interview (not implemented)', 'warning');
+        }
+
+        function endInterview() {
+            log('End interview (not implemented)', 'warning');
+        }
+
+        function uploadResume() {
+            if (window.prepAIWidget) {
+                const file = new File(['Test resume content'], 'test-resume.pdf', {
+                    type: 'application/pdf'
+                });
+                window.prepAIWidget.uploadResume(file);
+                log('Resume uploaded', 'success');
+            } else {
+                log('Widget not available', 'error');
+            }
+        }
+
+        function uploadCustomFile() {
+            if (window.prepAIWidget) {
+                const file = new File(['Custom file content'], 'custom-file.txt', {
+                    type: 'text/plain'
+                });
+                window.prepAIWidget.uploadResume(file);
+                log('Custom file uploaded', 'success');
+            } else {
+                log('Widget not available', 'error');
+            }
+        }
+
+        function clearUploads() {
+            log('Clear uploads (not implemented)', 'warning');
+        }
+
+        function testEvents() {
+            eventCount++;
+            log(`Testing events (count: ${eventCount})`, 'info');
+
+            // Simulate various events
+            setTimeout(() => {
+                document.dispatchEvent(new CustomEvent('prepai-interview-completed', {
+                    detail: {
+                        sessionId: `test-session-${eventCount}`,
+                        results: { score: 85, duration: 300 },
+                        candidate: { name: 'Test Candidate' }
+                    }
+                }));
+            }, 1000);
+        }
+
+        function clearEvents() {
+            log('Events cleared', 'info');
+        }
+
+        function simulateInterviewComplete() {
+            document.dispatchEvent(new CustomEvent('prepai-interview-completed', {
+                detail: {
+                    sessionId: 'simulated-session',
+                    results: { score: 90, duration: 450 },
+                    candidate: { name: 'Simulated Candidate' }
+                }
+            }));
+            log('Interview completion simulated', 'success');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            log('API test page initialized', 'info');
+
+            // Check widget status after a delay
+            setTimeout(() => {
+                if (window.prepAIWidget) {
+                    updateStatus('Widget Ready', 'ready');
+                    log('Widget loaded successfully', 'success');
+                    widgetReady = true;
+                } else {
+                    updateStatus('Widget Not Found', 'error');
+                    log('Widget not loaded', 'error');
+                }
+            }, 2000);
+
+            // Listen for widget events
+            document.addEventListener('prepai-interview-completed', (event) => {
+                log(`Interview completed: ${JSON.stringify(event.detail)}`, 'success');
+            });
+
+            // Listen for widget messages
+            window.addEventListener('message', (event) => {
+                const { type, data } = event.data;
+                if (type && data) {
+                    log(`Widget message: ${type}`, 'info');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

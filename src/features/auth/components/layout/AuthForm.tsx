@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AUTH_ROUTES } from '@/constants/routes';
 
 interface AuthFormProps {
-  type: 'login' | 'register';
+  type: 'login' | 'register' | 'verify';
   title: string;
   subtitle: string;
   linkText: string;
@@ -22,31 +22,30 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   const router = useRouter();
 
   const handleLinkClick = () => {
+    if (type === 'verify') return; // No navigation for verify type
+
     const targetRoute = type === 'login' ? AUTH_ROUTES.REGISTER : AUTH_ROUTES.LOGIN;
     router.push(targetRoute);
   };
 
   return (
-    <div className='w-full max-w-[636px]'>
+    <div className='w-full'>
       {/* Header Section */}
-      <div className='flex flex-col gap-1.5 mb-[60px]'>
-        <h1 className='text-[28px] font-normal font-poppins leading-[1.5em] text-[#363848]'>
-          {title}
-        </h1>
-        <div className='flex gap-1.5'>
-          <span className='text-[20px] font-normal font-poppins leading-[1.5em] text-[#363848]'>
-            {subtitle}
-          </span>
-          <button
-            type='button'
-            className='text-[20px] font-medium font-poppins leading-[1.5em] text-[#F35427] hover:underline'
-            onClick={handleLinkClick}
-          >
-            {linkText}
-          </button>
+      <div className='flex flex-col gap-2 mb-6 md:mb-8 2xl:mb-12'>
+        <h1 className='subheading-large text-side-heading-color font-normal'>{title}</h1>
+        <div className='flex gap-1.5 flex-col sm:flex-row sm:items-start'>
+          <span className='text-side-heading-color body-medium sm:body-regular'>{subtitle}</span>
+          {linkText && (
+            <button
+              type='button'
+              className='body-medium sm:body-regular text-primary hover:underline self-start'
+              onClick={handleLinkClick}
+            >
+              {linkText}
+            </button>
+          )}
         </div>
       </div>
-
       {/* Form Content */}
       {children}
     </div>

@@ -27,7 +27,7 @@
     "paths": {
       "@/*": ["./src/*"], // Root source directory
       "@/components/*": ["./src/components/*"], // Reusable UI components
-      "@/modules/*": ["src/features/*"], // Feature-based modules
+      "@/features/*": ["src/features/*"], // Feature-based modules
       "@/lib/*": ["./src/lib/*"], // Utility libraries and helpers
       "@/hooks/*": ["./src/hooks/*"], // Custom React hooks
       "@/store/*": ["./src/store/*"], // State management (Zustand)
@@ -37,7 +37,7 @@
       "@/jobs/*": ["./src/jobs/*"], // Background job processors
       "@/events/*": ["./src/events/*"], // Event handlers and emitters
       "@/security/*": ["./src/security/*"], // Security utilities and validations
-      "@/utils/*": ["./src/lib/utils"] // General utility functions
+      "@/utils/*": ["./src/utils/*"] // General utility functions
     },
 
     /* Strict Type-Checking Options */

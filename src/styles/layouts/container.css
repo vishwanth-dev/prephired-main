@@ -1,0 +1,14 @@
+@utility page-wrapper {
+  margin-left: 270px;
+  transition: 0.2s ease-in;
+}
+
+.page-wrapper.collapsed {
+  margin-left: 80px;
+}
+
+@media screen and (max-width: 1279px) {
+  .page-wrapper {
+    margin-left: 0;
+  }
+}

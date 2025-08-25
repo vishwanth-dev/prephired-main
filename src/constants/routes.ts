@@ -1,12 +1,5 @@
 // Public routes
 export const PUBLIC_ROUTES = {
-  HOME: '/',
-  LANDING: '/landing',
-  PRICING: '/pricing',
-  FEATURES: '/features',
-  ABOUT: '/about',
-  CONTACT: '/contact',
-  BLOG: '/blog',
   LEGAL: {
     PRIVACY: '/legal/privacy',
     TERMS: '/legal/terms',
@@ -21,12 +14,13 @@ export const AUTH_ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
   VERIFY_EMAIL: '/verify-email',
+  VERIFY_ACCOUNT: '/verify-account',
   SSO: '/sso',
 } as const;
 
 // Dashboard routes
 export const DASHBOARD_ROUTES = {
-  OVERVIEW: '/overview',
+  DASHBOARD: '/dashboard',
   INTERVIEWS: {
     LIST: '/interviews',
     CREATE: '/interviews/create',
@@ -145,10 +139,13 @@ export const ROUTE_PATTERNS = {
     '/select-role',
     '/reset-password',
     '/verify-email',
+    '/verify-account',
     '/sso/(.+)',
   ],
   PROTECTED: [
-    '/overview',
+    '/dashboard',
+    '/job-type',
+    '/select-role',
     '/interviews',
     '/interviews/(.+)',
     '/candidates',

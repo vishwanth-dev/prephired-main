@@ -38,13 +38,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className='flex flex-col gap-2'>
         {label && (
-          <Label
-            htmlFor={id}
-            className={cn(
-              'text-sm font-normal leading-none text-font-prime-color font-poppins',
-              labelClassName
-            )}
-          >
+          <Label htmlFor={id} className={cn('text-font-prime-color font-poppins', labelClassName)}>
             {label} {required && <span className='text-primary'>*</span>}
           </Label>
         )}
@@ -64,11 +58,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type={type}
             id={id}
             className={cn(
-              'border-input bg-white text-primary-foreground  file:text-foreground placeholder:text-support-text-color flex w-full rounded-full border  text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:border-ring focus-visible:ring-ring focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:text-base',
+              'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex w-full min-w-0 rounded-full border !bg-white px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent  file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ',
+              'focus-visible:border-transparent focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+              'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+              'body-medium 2xl:body-regular',
               hasPrefix && 'pl-10',
               hasSuffix && 'pr-10',
-              // error && 'border-red-500 focus-visible:ring-red-500',
-              'px-6 py-4',
+              '2xl:px-6 2xl:py-4 md:px-4 md:py-3 px-3 py-2',
               className
             )}
             ref={ref}
@@ -86,7 +82,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
         </div>
-        {error && <p className='text-red-500 text-xs'>{error}</p>}
+        {error && <p className='text-red-500 body-small'>{error}</p>}
       </div>
     );
   }

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prepAI Widget Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .test-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+
+        .test-button:hover {
+            background: #1d4ed8;
+        }
+
+        .test-button.secondary {
+            background: #6b7280;
+        }
+
+        .test-button.secondary:hover {
+            background: #4b5563;
+        }
+
+        .log-area {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1>🧪 prepAI Widget Test Page</h1>
+        <p>This page tests the prepAI interview widget functionality.</p>
+
+        <div class="test-section">
+            <h3>1. Widget Initialization</h3>
+            <button class="test-button" onclick="testWidgetInit()">Initialize Widget</button>
+            <button class="test-button secondary" onclick="testWidgetConfig()">Test Config Loading</button>
+            <div class="log-area" id="init-log"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Widget Controls</h3>
+            <button class="test-button" onclick="testOpenWidget()">Open Widget</button>
+            <button class="test-button" onclick="testCloseWidget()">Close Widget</button>
+            <button class="test-button secondary" onclick="testGetAnalytics()">Get Analytics</button>
+            <div class="log-area" id="controls-log"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. Interview Functions</h3>
+            <button class="test-button" onclick="testStartInterview()">Start Interview</button>
+            <button class="test-button" onclick="testUploadResume()">Upload Resume</button>
+            <div class="log-area" id="interview-log"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>4. Event Listeners</h3>
+            <button class="test-button" onclick="testEventListeners()">Setup Event Listeners</button>
+            <div class="log-area" id="events-log"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>5. Auto-initialization Test</h3>
+            <div data-prepai='{"theme": "dark", "primaryColor": "#ff6b6b"}'>
+                <p>This div has the data-prepai attribute for auto-initialization</p>
+            </div>
+            <div class="log-area" id="auto-log"></div>
+        </div>
+    </div>
+
+    <!-- Load the widget script -->
+    <script src="/public/widget/embed.js"></script>
+
+    <script>
+        // Test functions
+        function log(message, area = 'init-log') {
+            const logArea = document.getElementById(area);
+            const timestamp = new Date().toLocaleTimeString();
+            logArea.innerHTML += `[${timestamp}] ${message}\n`;
+            logArea.scrollTop = logArea.scrollHeight;
+            console.log(`[${area}] ${message}`);
+        }
+
+        function testWidgetInit() {
+            log('Testing widget initialization...');
+            try {
+                if (window.prepAIInit) {
+                    window.prepAIInit({
+                        ui: {
+                            theme: 'light',
+                            primaryColor: '#2563eb'
+                        },
+                        features: {
+                            voiceInterviews: true,
+                            resumeAnalysis: true
+                        }
+                    });
+                    log('Widget initialization successful');
+                } else {
+                    log('ERROR: prepAIInit function not found');
+                }
+            } catch (error) {
+                log(`ERROR: ${error.message}`);
+            }
+        }
+
+        function testWidgetConfig() {
+            log('Testing config loading...');
+            fetch('/public/widget/config.json')
+                .then(response => response.json())
+                .then(config => {
+                    log('Config loaded successfully:');
+                    log(JSON.stringify(config, null, 2));
+                })
+                .catch(error => {
+                    log(`ERROR loading config: ${error.message}`);
+                });
+        }
+
+        function testOpenWidget() {
+            log('Testing widget open...');
+            if (window.prepAIWidget && window.prepAIWidget.open) {
+                window.prepAIWidget.open();
+                log('Widget open command sent');
+            } else {
+                log('ERROR: Widget API not available');
+            }
+        }
+
+        function testCloseWidget() {
+            log('Testing widget close...');
+            if (window.prepAIWidget && window.prepAIWidget.close) {
+                window.prepAIWidget.close();
+                log('Widget close command sent');
+            } else {
+                log('ERROR: Widget API not available');
+            }
+        }
+
+        function testGetAnalytics() {
+            log('Testing analytics...');
+            if (window.prepAIWidget && window.prepAIWidget.getAnalytics) {
+                const analytics = window.prepAIWidget.getAnalytics();
+                log('Analytics data:');
+                log(JSON.stringify(analytics, null, 2));
+            } else {
+                log('ERROR: Widget API not available');
+            }
+        }
+
+        function testStartInterview() {
+            log('Testing interview start...');
+            if (window.prepAIWidget && window.prepAIWidget.startInterview) {
+                const candidateData = {
+                    name: 'John Doe',
+                    email: 'john@example.com',
+                    position: 'Software Engineer',
+                    company: 'Test Company'
+                };
+                window.prepAIWidget.startInterview(candidateData);
+                log('Interview start command sent with data:');
+                log(JSON.stringify(candidateData, null, 2));
+            } else {
+                log('ERROR: Widget API not available');
+            }
+        }
+
+        function testUploadResume() {
+            log('Testing resume upload...');
+            // Create a mock file for testing
+            const mockFile = new File(['Mock resume content'], 'resume.pdf', {
+                type: 'application/pdf'
+            });
+
+            if (window.prepAIWidget && window.prepAIWidget.uploadResume) {
+                window.prepAIWidget.uploadResume(mockFile);
+                log('Resume upload command sent');
+            } else {
+                log('ERROR: Widget API not available');
+            }
+        }
+
+        function testEventListeners() {
+            log('Setting up event listeners...');
+
+            // Listen for interview completion
+            document.addEventListener('prepai-interview-completed', (event) => {
+                log('Interview completed event received:', 'events-log');
+                log(JSON.stringify(event.detail, null, 2), 'events-log');
+            });
+
+            // Listen for widget messages
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.type) {
+                    log(`Widget message received: ${event.data.type}`, 'events-log');
+                    log(JSON.stringify(event.data, null, 2), 'events-log');
+                }
+            });
+
+            log('Event listeners setup complete');
+        }
+
+        // Auto-log when script loads
+        document.addEventListener('DOMContentLoaded', () => {
+            log('Page loaded, checking for auto-initialization...', 'auto-log');
+
+            setTimeout(() => {
+                if (window.prepAIWidget) {
+                    log('Widget auto-initialized successfully', 'auto-log');
+                } else {
+                    log('Widget not auto-initialized', 'auto-log');
+                }
+            }, 1000);
+        });
+
+        // Log script loading
+        window.addEventListener('load', () => {
+            log('All resources loaded');
+        });
+    </script>
+</body>
+
+</html>

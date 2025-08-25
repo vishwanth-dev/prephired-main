@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { isPublicRoute, isAuthRoute, isProtectedRoute, isAdminRoute, isWidgetRoute } from './src/constants/routes'
+import { isAuthRoute, isProtectedRoute, isAdminRoute, isWidgetRoute } from './src/constants/routes';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -54,7 +54,7 @@ export function middleware(request: NextRequest) {
   // Redirect logic based on route type
   if (isAuthRoute(pathname) && isAuthenticated) {
     // Redirect authenticated users away from auth pages
-    return NextResponse.redirect(new URL('/overview', request.url))
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   if (isProtectedRoute(pathname) && !isAuthenticated) {

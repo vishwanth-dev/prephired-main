@@ -1,6 +1,4 @@
-import { redirect } from 'next/navigation'
-
 export default function HomePage() {
-  // Redirect to landing page for now
-  redirect('/landing')
+  // Redirect to login page for now
+  return <h1>Hello World</h1>;
 }

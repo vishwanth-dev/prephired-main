@@ -1,38 +1,45 @@
+'use client';
+
 import React from 'react';
 import { useForm, type SubmitErrorHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/atoms/form';
 import { Input } from '@/components/atoms/input';
 import { Button } from '@/components/atoms/button';
 import { PasswordInput } from '@/features/auth/components/inputs/PasswordInput';
 import { PasswordStrengthMeter } from '@/features/auth/components/display/PasswordStrengthMeter';
-import { registerSchema, type RegisterFormData } from '@/features/auth/schema';
+import { type RegisterFormData } from '@/features/auth/schema';
 import { MailIcon, User } from 'lucide-react';
 import { PhoneInput } from '@/components/atoms';
 import { AuthForm } from '@/features/auth/components/layout/AuthForm';
 
-export const RegistrationForm: React.FC = () => {
-  const form = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      password: '',
-      confirmPassword: '',
-      acceptTerms: false,
-    },
-  });
+export interface RegistrationFormProps {
+  form: ReturnType<typeof useForm<RegisterFormData>>;
+  onSubmit: (data: RegisterFormData) => Promise<void>;
+  onError: SubmitErrorHandler<RegisterFormData>;
+  isLoading: boolean;
+  error: string | null;
+  resetError: () => void;
+}
 
-  const onSubmit = (data: RegisterFormData) => {
-    console.log(data);
-    // Handle form submission
-  };
+export const RegistrationForm: React.FC<RegistrationFormProps> = ({
+  form,
+  onSubmit,
+  onError,
+  isLoading,
+  error,
+  resetError,
+}) => {
+  const handleSubmit = form.handleSubmit(onSubmit, onError);
 
-  const onError: SubmitErrorHandler<RegisterFormData> = errors => {
-    console.log(errors);
-  };
+  // Reset error when form fields change
+  React.useEffect(() => {
+    const subscription = form.watch(() => {
+      if (error) {
+        resetError();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form, error, resetError]);
 
   return (
     <AuthForm
@@ -42,9 +49,12 @@ export const RegistrationForm: React.FC = () => {
       linkText='Login here'
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit, onError)} className='space-y-6'>
-          {/* Name fields - 2 columns */}
-          <div className='grid grid-cols-2 gap-4'>
+        <form
+          onSubmit={handleSubmit}
+          className='flex flex-col items-center gap-4 sm:gap-5 md:gap-6 w-full'
+        >
+          {/* Name fields - Single column on mobile, 2 columns on tablet+ */}
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 w-full'>
             <FormField
               control={form.control}
               name='firstName'
@@ -56,7 +66,7 @@ export const RegistrationForm: React.FC = () => {
                       {...field}
                       label='First Name'
                       required
-                      suffixIcon={<User className='w-6 h-6 text-[#989898]' />}
+                      suffixIcon={<User className='w-5 h-5 sm:w-6 sm:h-6 text-[#989898]' />}
                     />
                   </FormControl>
                   <FormMessage />
@@ -75,7 +85,7 @@ export const RegistrationForm: React.FC = () => {
                       {...field}
                       label='Last Name'
                       required
-                      suffixIcon={<User className='w-6 h-6 text-[#989898]' />}
+                      suffixIcon={<User className='w-5 h-5 sm:w-6 sm:h-6 text-[#989898]' />}
                     />
                   </FormControl>
                   <FormMessage />
@@ -84,8 +94,8 @@ export const RegistrationForm: React.FC = () => {
             />
           </div>
 
-          {/* Contact fields - 2 columns */}
-          <div className='grid grid-cols-2 gap-4'>
+          {/* Contact fields - Single column on mobile, 2 columns on tablet+ */}
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 w-full'>
             <FormField
               control={form.control}
               name='phone'
@@ -116,7 +126,7 @@ export const RegistrationForm: React.FC = () => {
                       placeholder='Enter your email'
                       {...field}
                       label='Email'
-                      suffixIcon={<MailIcon className='w-6 h-6 text-[#989898]' />}
+                      suffixIcon={<MailIcon className='w-5 h-5 sm:w-6 sm:h-6 text-[#989898]' />}
                       required
                     />
                   </FormControl>
@@ -126,8 +136,8 @@ export const RegistrationForm: React.FC = () => {
             />
           </div>
 
-          {/* Password fields - 2 columns */}
-          <div className='grid grid-cols-2 gap-4'>
+          {/* Password fields - Single column on mobile, 2 columns on tablet+ */}
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 w-full'>
             <FormField
               control={form.control}
               name='password'
@@ -211,7 +221,7 @@ export const RegistrationForm: React.FC = () => {
             control={form.control}
             name='acceptTerms'
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='w-full flex items-start'>
                 <div className='flex items-start gap-3'>
                   <FormControl>
                     <input
@@ -224,7 +234,7 @@ export const RegistrationForm: React.FC = () => {
                   </FormControl>
                   <label
                     htmlFor='acceptTerms'
-                    className='text-sm font-normal font-poppins leading-[1.5em] text-[#626262] cursor-pointer'
+                    className='body-small sm:body-medium font-normal font-poppins leading-[1.5em] text-[#626262] cursor-pointer'
                   >
                     I have read and accept Terms of Use, Privacy Policy, Terms & Conditions
                   </label>
@@ -234,8 +244,20 @@ export const RegistrationForm: React.FC = () => {
             )}
           />
 
-          <Button type='submit' className='w-full' disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? 'Creating Account...' : 'Create Account'}
+          {/* Error Display */}
+          {error && (
+            <div className='text-red-600 body-small p-3 bg-red-50 rounded-md border border-red-200 w-full'>
+              {error}
+            </div>
+          )}
+
+          <Button
+            type='submit'
+            className='w-full sm:w-full md:w-fit mx-auto self-center'
+            disabled={isLoading}
+            loading={isLoading}
+          >
+            {isLoading ? 'Creating Account...' : 'Create Account'}
           </Button>
         </form>
       </Form>

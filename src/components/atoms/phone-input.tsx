@@ -167,7 +167,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
           onClick={handleDropdownToggle}
         >
           <span className='text-lg'>{selectedCountry.flag}</span>
-          <span className='text-sm font-medium text-gray-700 min-w-fit'>
+          <span className='body-small font-medium text-gray-700 min-w-fit'>
             {selectedCountry.code}
           </span>
           <ChevronDown className='h-4 w-4 text-gray-400' />
@@ -191,10 +191,10 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                   onClick={() => handleCountrySelect(country)}
                 >
                   <span className='text-lg'>{country.flag}</span>
-                  <span className='text-sm font-medium text-gray-700 min-w-[40px]'>
+                  <span className='body-small font-medium text-gray-700 min-w-[40px]'>
                     {country.code}
                   </span>
-                  <span className='text-sm text-gray-600 flex-1'>{country.name}</span>
+                  <span className='body-small text-gray-600 flex-1'>{country.name}</span>
                 </div>
               ))}
             </div>,
@@ -213,7 +213,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       onChange: handlePhoneChange,
       prefixIcon: <CountrySelector />,
       className: cn(
-        'pl-24', // Extra padding for the country selector
+        '!pl-24', // Extra padding for the country selector
         className
       ),
       ...(label && { label }),

@@ -1,38 +1,40 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-
+import React, { useEffect } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 import { Button } from '@/components/atoms/button';
-import { Input } from '@/components/atoms/input';
 import { Label } from '@/components/atoms/label';
+import { EmailInput } from '@/features/auth/components/inputs/EmailInput';
 import { PasswordInput } from '@/features/auth/components/inputs/PasswordInput';
 import { AuthForm } from '@/features/auth/components/layout/AuthForm';
-import { loginFormSchema, type LoginFormInput } from '@/features/auth/schema';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { type LoginFormInput } from '@/features/auth/schema';
+import { Form, FormControl, FormField, FormItem } from '@/components/atoms/form';
 
-export const LoginForm: React.FC = () => {
-  const { login, loading, error } = useAuthStore();
+export interface LoginFormProps {
+  form: UseFormReturn<LoginFormInput>;
+  onSubmit: (data: LoginFormInput) => Promise<void>;
+  isLoading: boolean;
+  error: string | null;
+  resetError: () => void;
+}
 
-  const form = useForm<LoginFormInput>({
-    resolver: zodResolver(loginFormSchema),
-    defaultValues: {
-      emailOrPhone: '',
-      password: '',
-      rememberMe: false,
-    },
-  });
+export const LoginForm: React.FC<LoginFormProps> = ({
+  form,
+  onSubmit,
+  isLoading,
+  error,
+  resetError,
+}) => {
+  const handleSubmit = form.handleSubmit(onSubmit);
 
-  const onSubmit = async (data: LoginFormInput) => {
-    try {
-      await login({
-        email: data.emailOrPhone,
-        password: data.password,
-      });
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
-  };
+  useEffect(() => {
+    const subscription = form.watch(() => {
+      if (error) {
+        resetError();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form, error, resetError]);
 
   return (
     <AuthForm
@@ -41,49 +43,82 @@ export const LoginForm: React.FC = () => {
       subtitle="Don't have an account,"
       linkText='Create new account'
     >
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-        <div>
-          <Label htmlFor='emailOrPhone'>Email or Phone</Label>
-          <Input
-            id='emailOrPhone'
-            type='text'
-            placeholder='Enter your email or phone number'
-            {...form.register('emailOrPhone')}
-            error={form.formState.errors.emailOrPhone?.message}
+      <Form {...form}>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+          <FormField
+            control={form.control}
+            name='emailOrPhone'
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <EmailInput
+                    {...field}
+                    label='Email'
+                    placeholder='Enter your email'
+                    required
+                    error={form.formState.errors.emailOrPhone?.message}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
           />
-        </div>
 
-        <div>
-          <Label htmlFor='password'>Password</Label>
-          <PasswordInput
-            label='Password'
-            placeholder='Enter your password'
-            {...form.register('password')}
-            error={form.formState.errors.password?.message}
-            required
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <PasswordInput
+                    {...field}
+                    label='Password'
+                    placeholder='Enter your password'
+                    required
+                    error={form.formState.errors.password?.message}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
           />
-        </div>
 
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2'>
-            <input
-              type='checkbox'
-              id='rememberMe'
-              {...form.register('rememberMe')}
-              className='rounded border-gray-300'
-            />
-            <Label htmlFor='rememberMe' className='text-sm'>
-              Remember me
-            </Label>
+          <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0'>
+            <div className='flex items-center space-x-2'>
+              <input
+                type='checkbox'
+                id='rememberMe'
+                {...form.register('rememberMe')}
+                className='rounded border-gray-300'
+              />
+              <Label htmlFor='rememberMe' className='body-small'>
+                Remember me
+              </Label>
+            </div>
+
+            {/* Forgot Password Link */}
+            <a
+              href='/forgot-password'
+              className='body-small text-primary hover:text-primary/80 hover:underline transition-colors self-start sm:self-auto'
+            >
+              Forgot Password?
+            </a>
           </div>
-        </div>
 
-        {error && <div className='text-red-600 text-sm'>{error}</div>}
+          {error && (
+            <div className='text-red-600 body-small p-3 bg-red-50 rounded-md border border-red-200'>
+              {error}
+            </div>
+          )}
 
-        <Button type='submit' className='w-full' disabled={loading === 'loading'}>
-          {loading === 'loading' ? 'Signing in...' : 'Sign in'}
-        </Button>
-      </form>
+          <Button
+            type='submit'
+            className='w-full sm:w-full md:w-fit mx-auto'
+            disabled={isLoading}
+            loading={isLoading}
+          >
+            {isLoading ? 'Signing in...' : 'Sign in'}
+          </Button>
+        </form>
+      </Form>
     </AuthForm>
   );
 };

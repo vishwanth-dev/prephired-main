@@ -100,9 +100,9 @@ export const APP_ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
-  DASHBOARD: '/overview',
+  DASHBOARD: '/dashboard',
   INTERVIEWS: '/interviews',
   CANDIDATES: '/candidates',
   ANALYTICS: '/analytics',
   SETTINGS: '/settings',
-} as const
+} as const;

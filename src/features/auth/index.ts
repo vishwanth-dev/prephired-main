@@ -7,98 +7,37 @@
  * Simplified for basic authentication functionality.
  */
 
-// =============================================================================
-// COMPONENTS
-// =============================================================================
-
-// Forms
+// Components
 export { LoginForm } from './components/forms/LoginForm';
+export type { LoginFormProps } from './components/forms/LoginForm';
+
 export { RegistrationForm } from './components/forms/RegistrationForm';
-export { SelectRoleForm } from './components/forms/SelectRoleForm';
+export type { RegistrationFormProps } from './components/forms/RegistrationForm';
 
-// Inputs
+export { VerifyAccountForm } from './components/forms/VerifyAccountForm';
+export type { VerifyAccountFormProps } from './components/forms/VerifyAccountForm';
+
+export { ForgotPasswordForm } from './components/forms/ForgotPasswordForm';
+export type { ForgotPasswordFormProps } from './components/forms/ForgotPasswordForm';
+
+export { EmailInput } from './components/inputs/EmailInput';
+export type { EmailInputProps } from './components/inputs/EmailInput';
+
 export { PasswordInput } from './components/inputs/PasswordInput';
-
-// Display
-export { PasswordStrengthMeter } from './components/display/PasswordStrengthMeter';
-export { RoleSelectionHeader } from './components/display/RoleSelectionHeader';
-export { RoleSelectionGrid } from './components/display/RoleSelectionGrid';
-
-// Layout
-export { AuthForm } from './components/layout/AuthForm';
-export { RoleSelectionLayout } from './components/layout/RoleSelectionLayout';
-
-// Cards
-export { RoleCard } from './components/cards/RoleCard';
+export type { PasswordInputProps } from './components/inputs/PasswordInput';
 
 // Containers
-export { RegisterContainer } from './containers/RegisterContainer';
+export { LoginFormContainer } from './containers/LoginFormContainer';
+export { RegistrationFormContainer } from './containers/RegistrationFormContainer';
+export { VerifyAccountContainer } from './containers/VerifyAccountContainer';
+export { ForgotPasswordContainer } from './containers/ForgotPasswordContainer';
 
-// =============================================================================
-// HOOKS
-// =============================================================================
+// Hooks
+export { useLogin } from './hooks/useLogin';
+export type { UseLoginReturn } from './hooks/useLogin';
 
-// Form hooks
-export { useLoginForm } from './hooks/forms/useLoginForm';
-export { useRegisterForm } from './hooks/forms/useRegisterForm';
+export { useRegistration } from './hooks/useRegistration';
+export type { UseRegistrationReturn } from './hooks/useRegistration';
 
-// State hooks
-export { useAuthState } from './hooks/state/useAuthState';
-export { useUserState } from './hooks/state/useUserState';
-export { useRoleSelection } from './hooks/state/useRoleSelection';
-
-// =============================================================================
-// STORES
-// =============================================================================
-
-export { useAuthStore } from './store/authStore';
-export { useUserStore } from './store/userStore';
-export { useTenantStore } from './store/tenantStore';
-
-// =============================================================================
-// SERVICES
-// =============================================================================
-
-export { authBusinessService as authService } from './services/business/authService';
-export { userService } from './services/business/userService';
-export { validationService } from './services/business/validationService';
-export { roleSelectionService } from './services/business/roleSelectionService';
-
-// =============================================================================
-// CONSTANTS
-// =============================================================================
-
-export { ROLE_OPTIONS, getRoleOptionById, getRolesByCategory } from './constants/roleData';
-
-// =============================================================================
-// SCHEMAS
-// =============================================================================
-
-export * from './schema';
-
-// =============================================================================
-// TYPES
-// =============================================================================
-
-export * from './types';
-
-// =============================================================================
-// UTILITIES
-// =============================================================================
-
-export {
-  formatPhoneForDisplay,
-  formatPhoneForInput,
-  formatUserDisplayName,
-} from './utils/formatting';
-
-// =============================================================================
-// DOMAIN
-// =============================================================================
-
-// Core entities and types
-export * from './domain/entities';
-export * from './domain/errors';
-export * from './domain/events';
-export * from './domain/rules';
-export * from './domain/selectors';
+export { useVerifyAccount } from './hooks/useVerifyAccount';
+export { useForgotPassword } from './hooks/useForgotPassword';

@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Heading } from '@/components/atoms/heading';
+import { Heading } from '@/components/atoms';
 import { Text } from '@/components/atoms';
 interface RoleSelectionHeaderProps {
   className?: string;
@@ -16,7 +16,7 @@ interface RoleSelectionHeaderProps {
 export const RoleSelectionHeader: React.FC<RoleSelectionHeaderProps> = ({ className }) => {
   return (
     <div className={className}>
-      <Heading level={1} variant='hero' className='mb-2'>
+      <Heading level={2} variant='default' className='mb-2 text-primary'>
         Select Role
       </Heading>
       <Text variant='body' className='text-[#363848] max-w-xl'>

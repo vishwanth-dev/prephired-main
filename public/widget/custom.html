@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom prepAI Widget</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .widget-demo {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .config-info {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: left;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎨 Custom prepAI Widget</h1>
+        <p>This is a custom widget configuration with different styling and features</p>
+
+        <div class="widget-demo">
+            <h2>Custom Configuration</h2>
+            <div class="config-info">
+                <strong>Theme:</strong> Dark with purple gradient<br>
+                <strong>Primary Color:</strong> #8b5cf6<br>
+                <strong>Features:</strong> Voice interviews, Resume analysis<br>
+                <strong>Language:</strong> Spanish (es-ES)
+            </div>
+
+            <button class="btn" onclick="startCustomInterview()">🎤 Start Custom Interview</button>
+            <button class="btn" onclick="uploadCustomResume()">📄 Upload Resume</button>
+        </div>
+    </div>
+
+    <!-- Load the prepAI Widget script -->
+    <script src="/widget/embed.js"></script>
+
+    <!-- Custom configuration -->
+    <div data-prepai='{
+        "theme": "dark",
+        "primaryColor": "#8b5cf6",
+        "features": {
+            "voiceInterviews": true,
+            "resumeAnalysis": true,
+            "realTimeTranscription": true
+        },
+        "voice": {
+            "defaultLanguage": "es-ES",
+            "languages": ["es-ES", "en-US"]
+        },
+        "ui": {
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "borderRadius": "12px"
+        }
+    }'></div>
+
+    <script>
+        function startCustomInterview() {
+            if (window.prepAIWidget) {
+                window.prepAIWidget.startInterview({
+                    name: 'Custom Candidate',
+                    email: 'custom@example.com',
+                    position: 'Custom Role',
+                    language: 'es-ES'
+                });
+            } else {
+                alert('Widget not loaded yet. Please wait a moment and try again.');
+            }
+        }
+
+        function uploadCustomResume() {
+            if (window.prepAIWidget) {
+                const file = new File(['Custom resume content'], 'custom-resume.pdf', {
+                    type: 'application/pdf'
+                });
+                window.prepAIWidget.uploadResume(file);
+            } else {
+                alert('Widget not loaded yet. Please wait a moment and try again.');
+            }
+        }
+
+        // Notify parent that custom widget is ready
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'WIDGET_READY') {
+                window.parent.postMessage({
+                    type: 'CUSTOM_WIDGET_READY',
+                    data: { config: 'custom-purple-theme' }
+                }, '*');
+            }
+        });
+    </script>
+</body>
+
+</html>

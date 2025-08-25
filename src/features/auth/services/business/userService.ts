@@ -11,6 +11,7 @@ class UserService {
       return response.user || null;
     } catch (error) {
       // Error handling without console.log per coding standards
+      console.error('Failed to fetch user profile:', error);
       return null;
     }
   }
@@ -74,6 +75,7 @@ class UserService {
       const response = await userApiService.getSessions(userId);
       return response.sessions || [];
     } catch (error) {
+      console.error('Failed to fetch user sessions:', error);
       return [];
     }
   }
@@ -106,6 +108,7 @@ class UserService {
       const response = await userApiService.getActivity(userId, options);
       return response.activities || [];
     } catch (error) {
+      console.error(error);
       return [];
     }
   }

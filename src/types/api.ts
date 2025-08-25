@@ -3,7 +3,6 @@ import {
   Tenant,
   Interview,
   Candidate,
-  Resume,
   Session,
   Analytics,
   Notification,

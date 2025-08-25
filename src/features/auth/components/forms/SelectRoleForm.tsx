@@ -22,7 +22,7 @@ export const SelectRoleForm: React.FC = () => {
 
   return (
     <RoleSelectionLayout>
-      <div className='w-full max-w-7xl p-4 lg:p-8'>
+      <div className='w-full max-w-7xl p-4 lg:p-8 mx-auto'>
         {isSubmitting ? (
           <div className='text-center mt-6'>
             <p className='text-[#626262] font-poppins'>Setting up your account...</p>

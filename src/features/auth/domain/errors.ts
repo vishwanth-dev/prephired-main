@@ -112,6 +112,7 @@ export class InvalidCredentialsError extends BusinessRuleError {
 
 export class AccountLockedError extends BusinessRuleError {
   constructor(untilIso: string, attempts?: number) {
+    console.log('AccountLockedError', untilIso, attempts);
     super(`Account is locked until ${untilIso}`, 'ACCOUNT_LOCKED');
   }
 }
@@ -205,18 +206,21 @@ export class TenantNotFoundError extends BusinessRuleError {
 
 export class TenantAccessDeniedError extends BusinessRuleError {
   constructor(tenantId: string, userId: string) {
+    console.log('TenantAccessDeniedError', tenantId, userId);
     super(`Access denied to tenant: ${tenantId} `, 'TENANT_ACCESS_DENIED');
   }
 }
 
 export class InsufficientPermissionsError extends BusinessRuleError {
   constructor(action: string, requiredPermissions?: string[]) {
+    console.log('InsufficientPermissionsError', action, requiredPermissions);
     super(`Insufficient permissions for: ${action}`, 'INSUFFICIENT_PERMISSIONS');
   }
 }
 
 export class InvalidRoleError extends BusinessRuleError {
   constructor(role: string, availableRoles?: string[]) {
+    console.log('InvalidRoleError', role, availableRoles);
     super(`Invalid role: ${role}`, 'INVALID_ROLE');
   }
 }

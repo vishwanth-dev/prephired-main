@@ -1,0 +1,92 @@
+/* ==========================================================================
+   DASHBOARD GRADIENT UTILITIES
+   ========================================================================== */
+
+/* Score Card Gradients */
+@utility bg-avg-ai-interview-score {
+  background:
+    linear-gradient(0deg, #effcf7 0%, #effcf7 100%),
+    linear-gradient(182deg, #f6f6f6 19.1%, #fbf8f8 111.35%), rgba(255, 255, 255, 0.5);
+}
+
+@utility bg-avg-resume-score {
+  background:
+    linear-gradient(0deg, #eee6f9 0%, #eee6f9 100%),
+    linear-gradient(182deg, #f6f6f6 19.1%, #fbf8f8 111.35%), rgba(255, 255, 255, 0.5);
+}
+
+@utility bg-total-interview {
+  background:
+    linear-gradient(0deg, #fcf5ef 0%, #fcf5ef 100%),
+    linear-gradient(182deg, #f6f6f6 19.1%, #fbf8f8 111.35%), rgba(255, 255, 255, 0.5);
+}
+
+@utility bg-avg-ai-interview-score-dark {
+  background:
+    linear-gradient(0deg, #0d1f1a 0%, #0d1f1a 100%),
+    linear-gradient(182deg, #1a1a1a 19.1%, #1f1f1f 111.35%), rgba(0, 0, 0, 0.5);
+}
+
+@utility bg-avg-resume-score-dark {
+  background:
+    linear-gradient(0deg, #1a0d1f 0%, #1a0d1f 100%),
+    linear-gradient(182deg, #1a1a1a 19.1%, #1f1f1f 111.35%), rgba(0, 0, 0, 0.5);
+}
+
+@utility bg-total-interview-dark {
+  background:
+    linear-gradient(0deg, #1f0d0d 0%, #1f0d0d 100%),
+    linear-gradient(182deg, #1a1a1a 19.1%, #1f1f1f 111.35%), rgba(0, 0, 0, 0.5);
+}
+
+/* Welcome Section Gradients */
+@utility bg-welcome {
+  background: linear-gradient(194deg, #FFFEFC 4.69%, #FFE2BB 274.61%), linear-gradient(182deg, #F6F6F6 19.1%, #FBF8F8 111.35%), rgba(255, 255, 255, 0.50);
+  border: 1px solid #FFF0E2;
+  
+}
+
+@utility bg-welcome-dark {
+  background: linear-gradient(135deg, #4c63d2 0%, #5a3d8a 100%);
+}
+
+/* Dashboard Background Gradients */
+@utility bg-dashboard {
+  background: linear-gradient(0deg, #F9FAFF 0%, #F9FAFF 100%), linear-gradient(0deg, #FFF 0%, #FFF 100%), linear-gradient(180deg, #FDF2F2 -36.13%, #FFF 99.57%);
+  border: #FFE9E9;
+}
+
+@utility bg-dashboard-dark {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+}
+
+/* Card Gradients */
+@utility bg-card-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+@utility bg-card-gradient-dark {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+}
+
+/* Accent Gradients */
+@utility bg-accent-gradient {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+@utility bg-accent-gradient-dark {
+  background: linear-gradient(135deg, #d53f8c 0%, #b83280 100%);
+}
+
+@utility bg-gradient {
+  background: linear-gradient(180deg, #FEECEC -20.36%, rgba(255, 255, 255, 0.00) 121.28%), linear-gradient(235deg, rgba(255, 255, 255, 0.00) 41.92%, #F8CC87 108.97%), #FFF
+}
+
+@utility dashboard-gradient {
+  background: linear-gradient(180deg, #FEECEC -20.36%, rgba(255, 255, 255, 0.00) 121.28%), #F7F9FB;
+}
+
+@utility sidebar-gradient {
+  background: linear-gradient(180deg, #F9FAFF 0%, #FDF2F2 100%);
+  border: #FFE9E9;
+}

@@ -1,8 +1,11 @@
 export { Button } from './button';
 export { Card } from './card';
-export { Heading } from './heading';
+export { default as Heading } from './heading';
 export { Input } from './input';
 export { Label } from './label';
-export { Logo } from './logo';
-export { Text } from './text';
+export { default as Logo } from './logo';
+export { default as Text } from './text';
 export { PhoneInput } from './phone-input';
+export * from './input-otp';
+export * from './sheet';
+export * from './dropdown-menu';

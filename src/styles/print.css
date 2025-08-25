@@ -1,0 +1,64 @@
+/* ==========================================================================
+   PRINT STYLES - styles/print.css
+   ========================================================================== */
+
+@media print {
+  .text-print-optimized {
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+    color: black !important;
+    font-family: var(--font-inter) !important;
+  }
+
+  .text-print-heading {
+    font-size: 16pt !important;
+    line-height: 1.2 !important;
+    color: black !important;
+    page-break-after: avoid !important;
+    font-family: var(--font-poppins) !important;
+  }
+
+  /* Hide elements that shouldn't print */
+  .print-hidden {
+    display: none !important;
+  }
+
+  /* Show elements only when printing */
+  .print-block {
+    display: block !important;
+  }
+
+  /* Print-specific layouts */
+  .print-break-before {
+    page-break-before: always !important;
+  }
+
+  .print-break-after {
+    page-break-after: always !important;
+  }
+
+  .print-break-inside-avoid {
+    page-break-inside: avoid !important;
+  }
+
+  /* General print styles */
+  * {
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Hide common UI elements */
+  nav,
+  .navigation,
+  .sidebar,
+  .header,
+  .footer,
+  .btn,
+  button:not(.print-block) {
+    display: none !important;
+  }
+}

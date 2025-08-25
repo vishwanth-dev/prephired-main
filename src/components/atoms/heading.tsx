@@ -1,57 +1,59 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
-interface HeadingProps {
+export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
-  variant?: 'default' | 'hero' | 'section' | 'card';
-  className?: string;
-  children: React.ReactNode;
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  variant?: 'default' | 'subheading';
 }
 
-export const Heading: React.FC<HeadingProps> = ({
+const Heading: React.FC<HeadingProps> = ({
   level = 1,
+  as,
   variant = 'default',
   className,
   children,
+  ...props
 }) => {
-  const baseClasses = 'font-poppins font-semibold leading-[1.5em]';
+  // Determine the actual element to render
+  const Component = as || `h${level}`;
 
-  const variantClasses = {
-    default: 'text-gray-900',
-    hero: 'text-[#F0806C]',
-    section: 'text-gray-800',
-    card: 'text-[#F0806C]',
+  // Base classes for all headings
+  const baseClasses = 'font-sans tracking-tight';
+
+  // Typography classes based on WunderUI design system
+  const typographyClasses = {
+    1: 'text-h1 font-bold',
+    2: 'text-h2 font-bold',
+    3: 'text-h3 font-bold',
+    4: 'text-h4 font-semibold',
+    5: 'text-h5 font-bold',
+    6: 'text-h6 font-semibold',
   };
 
-  const sizeClasses = {
-    1: 'text-2xl sm:text-3xl lg:text-4xl',
-    2: 'text-xl sm:text-2xl lg:text-3xl',
-    3: 'text-lg sm:text-xl lg:text-2xl',
-    4: 'text-base sm:text-lg lg:text-xl',
-    5: 'text-sm sm:text-base lg:text-lg',
-    6: 'text-xs sm:text-sm lg:text-base',
+  // Subheading variants
+  const subheadingClasses = {
+    1: 'text-subheading-h1 font-bold',
+    2: 'text-subheading-h2 font-semibold',
+    3: 'text-subheading-h3 font-semibold',
+    4: 'text-subheading-h3 font-semibold',
+    5: 'text-subheading-h3 font-semibold',
+    6: 'text-subheading-h3 font-semibold',
   };
 
-  const renderHeading = () => {
-    const classes = cn(baseClasses, variantClasses[variant], sizeClasses[level], className);
+  const classes = cn(
+    baseClasses,
+    variant === 'subheading' ? subheadingClasses[level] : typographyClasses[level],
+    className
+  );
 
-    switch (level) {
-      case 1:
-        return <h1 className={classes}>{children}</h1>;
-      case 2:
-        return <h2 className={classes}>{children}</h2>;
-      case 3:
-        return <h3 className={classes}>{children}</h3>;
-      case 4:
-        return <h4 className={classes}>{children}</h4>;
-      case 5:
-        return <h5 className={classes}>{children}</h5>;
-      case 6:
-        return <h6 className={classes}>{children}</h6>;
-      default:
-        return <h1 className={classes}>{children}</h1>;
-    }
-  };
-
-  return renderHeading();
+  return (
+    <Component className={classes} {...props}>
+      {children}
+    </Component>
+  );
 };
+
+Heading.displayName = 'Heading';
+
+export default Heading;

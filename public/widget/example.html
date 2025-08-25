@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prepAI Widget Integration Example</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .demo-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: left;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature h3 {
+            margin: 0 0 0.5rem 0;
+            color: #fbbf24;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="status" id="widget-status">Widget: Loading...</div>
+
+    <div class="container">
+        <h1>🎙️ prepAI Interview Widget</h1>
+        <p class="subtitle">AI-powered voice interviews embedded directly in your website</p>
+
+        <div class="demo-section">
+            <h2>Try the Widget</h2>
+            <p>Click the button below to start an AI-powered interview experience</p>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="startInterview()">
+                    🎤 Start Interview
+                </button>
+                <button class="btn btn-secondary" onclick="uploadResume()">
+                    📄 Upload Resume
+                </button>
+                <button class="btn btn-secondary" onclick="showAnalytics()">
+                    📊 View Analytics
+                </button>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>🎤 Voice Interviews</h3>
+                    <p>Conduct natural voice conversations with AI-powered interviewers</p>
+                </div>
+                <div class="feature">
+                    <h3>📝 Real-time Transcription</h3>
+                    <p>Get instant text transcription of interview responses</p>
+                </div>
+                <div class="feature">
+                    <h3>📄 Resume Analysis</h3>
+                    <p>Upload and analyze candidate resumes automatically</p>
+                </div>
+                <div class="feature">
+                    <h3>🤖 AI Questions</h3>
+                    <p>Dynamic question generation based on role and experience</p>
+                </div>
+                <div class="feature">
+                    <h3>📊 Analytics</h3>
+                    <p>Track interview performance and candidate insights</p>
+                </div>
+                <div class="feature">
+                    <h3>🎨 Customizable</h3>
+                    <p>Brand with your colors and integrate seamlessly</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Integration Code</h2>
+            <p>Add this simple code to your website:</p>
+
+            <div class="code-block">
+                &lt;!-- Load the prepAI Widget script --&gt;
+                &lt;script src="https://your-domain.com/public/embed.js"&gt;&lt;/script&gt;
+
+                &lt;!-- Auto-initialize with custom options --&gt;
+                &lt;div data-prepai='{"theme": "dark", "primaryColor": "#8b5cf6"}'&gt;&lt;/div&gt;
+            </div>
+
+            <div class="button-group">
+                <a href="https://docs.prepaid.com/widget" class="btn btn-primary" target="_blank">
+                    📖 View Full Documentation
+                </a>
+                <a href="https://github.com/prepaid/widget-examples" class="btn btn-secondary" target="_blank">
+                    💻 GitHub Examples
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the prepAI Widget script -->
+    <script src="/public/widget/embed.js"></script>
+
+    <!-- Auto-initialize with custom options -->
+    <div data-prepai='{
+        "theme": "dark",
+        "primaryColor": "#8b5cf6",
+        "features": {
+            "voiceInterviews": true,
+            "resumeAnalysis": true,
+            "realTimeTranscription": true,
+            "questionGeneration": true,
+            "analytics": true
+        }
+    }'></div>
+
+    <script>
+        // Demo functions
+        function startInterview() {
+            if (window.prepAIWidget) {
+                window.prepAIWidget.startInterview({
+                    name: 'Demo Candidate',
+                    email: 'demo@example.com',
+                    position: 'Software Engineer',
+                    experience: '5 years'
+                });
+            } else {
+                alert('Widget not loaded yet. Please wait a moment and try again.');
+            }
+        }
+
+        function uploadResume() {
+            if (window.prepAIWidget) {
+                // Create a dummy file for demo
+                const file = new File(['Demo resume content'], 'demo-resume.pdf', {
+                    type: 'application/pdf'
+                });
+                window.prepAIWidget.uploadResume(file);
+            } else {
+                alert('Widget not loaded yet. Please wait a moment and try again.');
+            }
+        }
+
+        function showAnalytics() {
+            if (window.prepAIWidget) {
+                const analytics = window.prepAIWidget.getAnalytics();
+                alert('Widget Analytics:\n' + JSON.stringify(analytics, null, 2));
+            } else {
+                alert('Widget not loaded yet. Please wait a moment and try again.');
+            }
+        }
+
+        // Update status
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const status = document.getElementById('widget-status');
+                if (window.prepAIWidget) {
+                    status.textContent = 'Widget: Ready';
+                    status.style.background = 'rgba(34, 197, 94, 0.8)';
+                } else {
+                    status.textContent = 'Widget: Error';
+                    status.style.background = 'rgba(239, 68, 68, 0.8)';
+                }
+            }, 2000);
+        });
+
+        // Listen for interview completion
+        document.addEventListener('prepai-interview-completed', (event) => {
+            console.log('Interview completed:', event.detail);
+            alert('Interview completed! Check console for details.');
+        });
+    </script>
+</body>
+
+</html>
