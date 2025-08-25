@@ -34,7 +34,7 @@ export const useRegisterForm = () => {
         acceptTerms: data.acceptTerms,
         acceptPrivacy: data.acceptPrivacy || false,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Registration failed:', error);
     }
   };

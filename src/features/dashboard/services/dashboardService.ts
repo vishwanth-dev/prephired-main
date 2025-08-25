@@ -344,7 +344,7 @@ export class DashboardService {
     };
   }
 
-  static async getDashboardStats(timeframe: string = 'weekly'): Promise<DashboardStats> {
+  static async getDashboardStats(_timeframe: string = 'weekly'): Promise<DashboardStats> {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -391,8 +391,8 @@ export class DashboardService {
   }
 
   static async getSkillProgress(
-    category: string = 'all',
-    timeframe: string = 'monthly'
+    _category: string = 'all',
+    _timeframe: string = 'monthly'
   ): Promise<SkillCategory[]> {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 600));
@@ -496,7 +496,7 @@ export class DashboardService {
     ];
   }
 
-  static async getSentimentAnalysis(timeframe: string = 'weekly'): Promise<SentimentData[]> {
+  static async getSentimentAnalysis(_timeframe: string = 'weekly'): Promise<SentimentData[]> {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 400));
 
@@ -857,7 +857,7 @@ export class DashboardService {
   }
 
   // New method to get dashboard overview (aggregated data)
-  static async getDashboardOverview(timeframe: string = 'weekly'): Promise<DashboardData> {
+  static async getDashboardOverview(_timeframe: string = 'weekly'): Promise<DashboardData> {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -865,7 +865,7 @@ export class DashboardService {
   }
 
   // New method to get detailed sentiment analysis
-  static async getDetailedSentimentAnalysis(timeframe: string = 'weekly'): Promise<any> {
+  static async getDetailedSentimentAnalysis(_timeframe: string = 'weekly'): Promise<any> {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
 

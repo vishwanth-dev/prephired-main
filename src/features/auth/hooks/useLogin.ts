@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useCallback } from 'react';
 import { loginFormSchema, type LoginFormInput } from '@/features/auth/schema';
-import { useAuthStore } from '@/features/auth/store/authStore';
 import { useRouter } from 'next/navigation';
 import { AUTH_ROUTES } from '@/constants/routes';
 
@@ -17,7 +16,6 @@ export interface UseLoginReturn {
 }
 
 export const useLogin = (): UseLoginReturn => {
-  const { login } = useAuthStore();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +30,7 @@ export const useLogin = (): UseLoginReturn => {
   });
 
   const onSubmit = useCallback(
-    async (data: LoginFormInput): Promise<void> => {
+    async (): Promise<void> => {
       try {
         setIsLoading(true);
         setError(null);

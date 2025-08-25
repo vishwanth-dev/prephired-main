@@ -45,7 +45,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       <AuthForm
         type='verify'
         title='Check Your Email'
-        subtitle="We've sent a password reset link to your email"
+        subtitle="We&apos;ve sent a password reset link to your email"
         linkText=''
       >
         <div className='flex flex-col items-center gap-8 w-full'>
@@ -53,7 +53,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           <div className='text-center max-w-md'>
             <h3 className='body-large font-semibold text-gray-800 mb-3'>Reset Link Sent!</h3>
             <p className='body-medium text-gray-600 mb-6'>
-              We've sent a password reset link to your email address. Please check your inbox and
+              We&apos;ve sent a password reset link to your email address. Please check your inbox and
               follow the instructions to reset your password.
             </p>
           </div>

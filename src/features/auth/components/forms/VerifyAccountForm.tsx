@@ -102,6 +102,7 @@ export const VerifyAccountForm: React.FC<VerifyAccountFormProps> = ({
                             <InputOTPGroup className='gap-5'>
                               {Array.from({ length: otpLength }, (_, index) => (
                                 <InputOTPSlot
+                                  key={index}
                                   index={index}
                                   className=' border-[1.63px] border-input rounded-[6.53px] bg-[rgba(230,102,26,0.02)] focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 text-center'
                                 />
