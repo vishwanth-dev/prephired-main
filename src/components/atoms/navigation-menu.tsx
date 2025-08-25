@@ -96,7 +96,9 @@ function NavigationMenuContent({
         className
       )}
       {...props}
-    />
+    >
+      {children}
+    </NavigationMenuPrimitive.Content>
   );
 }
 

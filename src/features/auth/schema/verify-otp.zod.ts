@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { emailOrPhoneSchema, otpSchema } from './shared';
+import { otpSchema } from './shared';
 
 /**
  * UI Verify Account with OTP (maps to domain VerifyAccountForm)

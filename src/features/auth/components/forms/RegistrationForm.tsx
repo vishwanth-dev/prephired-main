@@ -30,6 +30,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   resetError,
 }) => {
   const handleSubmit = form.handleSubmit(onSubmit, onError);
+  const [showTooltip, setShowTooltip] = React.useState(false);
 
   // Reset error when form fields change
   React.useEffect(() => {
@@ -141,11 +142,8 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
             <FormField
               control={form.control}
               name='password'
-              render={({ field }) => {
-                const [showTooltip, setShowTooltip] = React.useState(false);
-
-                return (
-                  <FormItem className='relative'>
+              render={({ field }) => (
+                <FormItem className='relative'>
                     <FormControl>
                       <PasswordInput
                         label='Password'
@@ -192,10 +190,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                     )}
 
                     <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
+                    </FormItem>
+                )}
+              />
 
             <FormField
               control={form.control}

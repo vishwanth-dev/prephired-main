@@ -12,14 +12,11 @@ import {
   MenuIcon,
   Sun,
   Moon,
-  ChevronDown,
   Settings,
   User,
   LogOut,
   Languages,
-  X,
   EllipsisVertical,
-  MenuSquareIcon,
   ListCollapse,
 } from 'lucide-react';
 import {
