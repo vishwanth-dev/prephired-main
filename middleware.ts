@@ -6,8 +6,8 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const response = NextResponse.next()
 
-  // Add security headers
-  response.headers.set('X-Frame-Options', 'DENY')
+  // Add security headers and allow same-origin embedding
+  response.headers.set('X-Frame-Options', 'SAMEORIGIN')
   response.headers.set('X-Content-Type-Options', 'nosniff')
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
   response.headers.set('X-XSS-Protection', '1; mode=block')
@@ -18,15 +18,14 @@ export function middleware(request: NextRequest) {
 
   // Handle widget routes with different security policy
   if (isWidgetRoute(pathname)) {
-    // Allow embedding for widget routes
-    response.headers.delete('X-Frame-Options')
+    // Allow same-origin embedding for widget routes
     response.headers.set('X-Frame-Options', 'SAMEORIGIN')
-    
+
     // Add CORS headers for widget
     response.headers.set('Access-Control-Allow-Origin', '*')
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-    
+
     return response
   }
 
