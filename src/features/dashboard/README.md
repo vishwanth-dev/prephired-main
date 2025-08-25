@@ -7,17 +7,17 @@ navigation and analytics components.
 
 ```bash
 dashboard/
+├── ARCHITECTURE_REVIEW.md  # Feature architecture notes
 ├── components/          # UI components
 │   ├── cards/          # Dashboard card components
 │   ├── header/         # Dashboard header with logo and user menu
 │   ├── sidebar/        # Navigation sidebar
 │   └── index.ts        # Component exports
-├── constants/           # Constants and configuration
-├── container/           # Main container components
+├── constants/          # Constants and configuration
+├── containers/         # Feature containers
 ├── hooks/              # Custom React hooks
-├── pages/              # Page components
+├── routes/             # Route definitions
 ├── services/           # API and business logic
-├── templates/          # Layout templates
 ├── types/              # TypeScript type definitions
 └── index.ts            # Feature exports
 ```
@@ -38,7 +38,6 @@ dashboard/
 
 - **DashboardSidebar**: Navigation sidebar with menu items
 - **DashboardHeader**: Top header with logo and user controls
-- **DashboardLayout**: Layout template for dashboard pages
 
 ## Features
 
@@ -54,20 +53,8 @@ dashboard/
 ```tsx
 import { DashboardContainer } from '@/features/dashboard';
 
-// Use in a page
 const DashboardPage = () => {
   return <DashboardContainer />;
-};
-
-// Or use the layout template
-import { DashboardLayout } from '@/features/dashboard';
-
-const CustomDashboardPage = () => {
-  return (
-    <DashboardLayout>
-      <div>Custom dashboard content</div>
-    </DashboardLayout>
-  );
 };
 ```
 
