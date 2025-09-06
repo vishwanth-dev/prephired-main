@@ -1,188 +1,245 @@
-// Public routes
-export const PUBLIC_ROUTES = {
-  LEGAL: {
-    PRIVACY: '/legal/privacy',
-    TERMS: '/legal/terms',
-    COOKIES: '/legal/cookies',
-  },
-} as const;
+/**
+ * 🛣️ Route Helper Functions
+ *
+ * This file contains utility functions for route classification and protection.
+ * It provides centralized route checking logic for middleware and components.
+ *
+ * 📋 Features:
+ * - Authentication route detection
+ * - Protected route identification
+ * - Admin route checking
+ * - Widget route handling
+ * - Public route classification
+ *
+ * 🔧 Usage:
+ * ```typescript
+ * import { isAuthRoute, isProtectedRoute } from '@/constants/routes';
+ *
+ * if (isAuthRoute(pathname)) {
+ *   // Handle auth route logic
+ * }
+ * ```
+ */
 
-// Authentication routes
-export const AUTH_ROUTES = {
-  LOGIN: '/login',
-  REGISTER: '/register',
-  FORGOT_PASSWORD: '/forgot-password',
-  RESET_PASSWORD: '/reset-password',
-  VERIFY_EMAIL: '/verify-email',
-  VERIFY_ACCOUNT: '/verify-account',
-  SSO: '/sso',
-} as const;
+// ============================================
+// 🔐 AUTHENTICATION ROUTES
+// ============================================
 
-// Dashboard routes
-export const DASHBOARD_ROUTES = {
-  DASHBOARD: '/dashboard',
-  INTERVIEWS: {
-    LIST: '/interviews',
-    CREATE: '/interviews/create',
-    DETAIL: (id: string) => `/interviews/${id}`,
-    EDIT: (id: string) => `/interviews/${id}/edit`,
-    SETTINGS: (id: string) => `/interviews/${id}/settings`,
-  },
-  USERS: {
-    LIST: '/users',
-    DETAIL: (id: string) => `/users/${id}`,
-    ROLES: '/users/roles',
-    INVITE: '/users/invite',
-  },
-  ANALYTICS: {
-    OVERVIEW: '/analytics',
-    REPORTS: '/analytics/reports',
-    METRICS: '/analytics/metrics',
-  },
-  SETTINGS: {
-    PROFILE: '/settings/profile',
-    TEAM: '/settings/team',
-    INTEGRATIONS: '/settings/integrations',
-    SECURITY: '/settings/security',
-    PREFERENCES: '/settings/preferences',
-    API_KEYS: '/settings/api-keys',
-  },
-} as const;
-
-// Admin routes
-export const ADMIN_ROUTES = {
-  TENANTS: '/admin/tenants',
-  SYSTEM: '/admin/system',
-  MONITORING: '/admin/monitoring',
-} as const;
-
-// Widget routes
-export const WIDGET_ROUTES = {
-  EMBED: '/embed',
-  PREVIEW: '/preview',
-  TENANT_EMBED: (tenantId: string) => `/embed/${tenantId}`,
-} as const;
-
-// API routes
-export const API_ROUTES = {
-  AUTH: {
-    LOGIN: '/api/auth/signin',
-    REGISTER: '/api/auth/signup',
-    LOGOUT: '/api/auth/signout',
-    SESSION: '/api/auth/session',
-    PROVIDERS: '/api/auth/providers',
-  },
-  INTERVIEWS: {
-    LIST: '/api/interviews',
-    CREATE: '/api/interviews',
-    DETAIL: (id: string) => `/api/interviews/${id}`,
-    UPDATE: (id: string) => `/api/interviews/${id}`,
-    DELETE: (id: string) => `/api/interviews/${id}`,
-    START: (id: string) => `/api/interviews/${id}/start`,
-    END: (id: string) => `/api/interviews/${id}/end`,
-  },
-  CANDIDATES: {
-    LIST: '/api/candidates',
-    CREATE: '/api/candidates',
-    DETAIL: (id: string) => `/api/candidates/${id}`,
-    UPDATE: (id: string) => `/api/candidates/${id}`,
-    DELETE: (id: string) => `/api/candidates/${id}`,
-    INVITE: (id: string) => `/api/candidates/${id}/invite`,
-  },
-  USERS: {
-    LIST: '/api/users',
-    CREATE: '/api/users',
-    DETAIL: (id: string) => `/api/users/${id}`,
-    UPDATE: (id: string) => `/api/users/${id}`,
-    DELETE: (id: string) => `/api/users/${id}`,
-    INVITE: '/api/users/invite',
-    ROLES: '/api/users/roles',
-  },
-  ANALYTICS: {
-    OVERVIEW: '/api/analytics',
-    METRICS: '/api/analytics/metrics',
-    REPORTS: '/api/analytics/reports',
-    EVENTS: '/api/analytics/events',
-  },
-  UPLOAD: '/api/upload',
-  HEALTH: '/api/health',
-  TENANTS: {
-    LIST: '/api/tenants',
-    DETAIL: (id: string) => `/api/tenants/${id}`,
-  },
-  INTEGRATIONS: {
-    LIST: '/api/integrations',
-    CREATE: '/api/integrations',
-    WEBHOOKS: '/api/integrations/webhooks',
-    OAUTH: '/api/integrations/oauth',
-    API_KEYS: '/api/integrations/api-keys',
-  },
-} as const;
-
-// Route patterns for middleware
-export const ROUTE_PATTERNS = {
-  PUBLIC: [
-    '/',
-    '/landing',
-    '/pricing',
-    '/features',
-    '/about',
-    '/contact',
-    '/blog',
-    '/blog/(.+)',
-    '/legal/(.+)',
-  ],
-  AUTH: [
-    '/login',
-    '/register',
-    '/forgot-password',
-    '/select-role',
-    '/reset-password',
-    '/verify-email',
-    '/verify-account',
-    '/sso/(.+)',
-  ],
-  PROTECTED: [
-    '/dashboard',
-    '/job-type',
-    '/select-role',
-    '/interviews',
-    '/interviews/(.+)',
-    '/candidates',
-    '/candidates/(.+)',
-    '/users',
-    '/users/(.+)',
-    '/analytics',
-    '/analytics/(.+)',
-    '/settings',
-    '/settings/(.+)',
-  ],
-  ADMIN: ['/admin/(.+)'],
-  WIDGET: ['/embed', '/embed/(.+)', '/preview'],
-  API: ['/api/(.+)'],
-} as const;
-
-// Helper functions
-export const isPublicRoute = (pathname: string): boolean => {
-  return ROUTE_PATTERNS.PUBLIC.some(pattern => new RegExp(`^${pattern}$`).test(pathname));
-};
-
+/**
+ * Check if the given pathname is an authentication route
+ * @param pathname - The pathname to check
+ * @returns true if the route requires authentication
+ */
 export const isAuthRoute = (pathname: string): boolean => {
-  return ROUTE_PATTERNS.AUTH.some(pattern => new RegExp(`^${pattern}$`).test(pathname));
+  return (
+    pathname.startsWith('/auth/') ||
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/register') ||
+    pathname.startsWith('/forgot-password') ||
+    pathname.startsWith('/reset-password') ||
+    pathname.startsWith('/verify-account') ||
+    pathname.startsWith('/verify-otp')
+  );
 };
 
+// ============================================
+// 🛡️ PROTECTED ROUTES
+// ============================================
+
+/**
+ * Check if the given pathname is a protected route that requires authentication
+ * @param pathname - The pathname to check
+ * @returns true if the route requires authentication
+ */
 export const isProtectedRoute = (pathname: string): boolean => {
-  return ROUTE_PATTERNS.PROTECTED.some(pattern => new RegExp(`^${pattern}$`).test(pathname));
+  return (
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/profile') ||
+    pathname.startsWith('/interviews') ||
+    pathname.startsWith('/settings') ||
+    pathname.startsWith('/resume-analysis') ||
+    pathname.startsWith('/onboarding') ||
+    pathname.startsWith('/account') ||
+    pathname.startsWith('/billing') ||
+    pathname.startsWith('/notifications')
+  );
 };
 
+// ============================================
+// 👑 ADMIN ROUTES
+// ============================================
+
+/**
+ * Check if the given pathname is an admin route that requires admin privileges
+ * @param pathname - The pathname to check
+ * @returns true if the route requires admin access
+ */
 export const isAdminRoute = (pathname: string): boolean => {
-  return ROUTE_PATTERNS.ADMIN.some(pattern => new RegExp(`^${pattern}$`).test(pathname));
+  return (
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/super-admin') ||
+    pathname.startsWith('/system')
+  );
 };
 
+// ============================================
+// 🎨 WIDGET ROUTES
+// ============================================
+
+/**
+ * Check if the given pathname is a widget route
+ * @param pathname - The pathname to check
+ * @returns true if the route is a widget route
+ */
 export const isWidgetRoute = (pathname: string): boolean => {
-  return ROUTE_PATTERNS.WIDGET.some(pattern => new RegExp(`^${pattern}$`).test(pathname));
+  return (
+    pathname.startsWith('/widget') ||
+    pathname.startsWith('/embed') ||
+    pathname.startsWith('/public-widget')
+  );
 };
 
-export const isApiRoute = (pathname: string): boolean => {
-  return ROUTE_PATTERNS.API.some(pattern => new RegExp(`^${pattern}$`).test(pathname));
+// ============================================
+// 🌐 PUBLIC ROUTES
+// ============================================
+
+/**
+ * Check if the given pathname is a public route that doesn't require authentication
+ * @param pathname - The pathname to check
+ * @returns true if the route is public
+ */
+export const isPublicRoute = (pathname: string): boolean => {
+  return (
+    pathname === '/' ||
+    pathname.startsWith('/about') ||
+    pathname.startsWith('/contact') ||
+    pathname.startsWith('/pricing') ||
+    pathname.startsWith('/features') ||
+    pathname.startsWith('/help') ||
+    pathname.startsWith('/docs') ||
+    pathname.startsWith('/blog') ||
+    pathname.startsWith('/legal') ||
+    pathname.startsWith('/privacy') ||
+    pathname.startsWith('/terms') ||
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/static/') ||
+    pathname.startsWith('/favicon') ||
+    pathname.startsWith('/robots') ||
+    pathname.startsWith('/sitemap')
+  );
 };
+
+// ============================================
+// 🔄 API ROUTES
+// ============================================
+
+/**
+ * Check if the given pathname is an API route
+ * @param pathname - The pathname to check
+ * @returns true if the route is an API route
+ */
+export const isApiRoute = (pathname: string): boolean => {
+  return pathname.startsWith('/api/');
+};
+
+// ============================================
+// 📱 STATIC ROUTES
+// ============================================
+
+/**
+ * Check if the given pathname is a static route (Next.js internal)
+ * @param pathname - The pathname to check
+ * @returns true if the route is a static route
+ */
+export const isStaticRoute = (pathname: string): boolean => {
+  return (
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/static/') ||
+    pathname.startsWith('/favicon') ||
+    pathname.startsWith('/robots') ||
+    pathname.startsWith('/sitemap') ||
+    pathname.startsWith('/manifest')
+  );
+};
+
+// ============================================
+// 🎯 ROUTE CLASSIFICATION
+// ============================================
+
+/**
+ * Get the route type for a given pathname
+ * @param pathname - The pathname to classify
+ * @returns The route type
+ */
+export const getRouteType = (
+  pathname: string
+): 'auth' | 'protected' | 'admin' | 'widget' | 'public' | 'api' | 'static' => {
+  if (isAuthRoute(pathname)) return 'auth';
+  if (isProtectedRoute(pathname)) return 'protected';
+  if (isAdminRoute(pathname)) return 'admin';
+  if (isWidgetRoute(pathname)) return 'widget';
+  if (isApiRoute(pathname)) return 'api';
+  if (isStaticRoute(pathname)) return 'static';
+  return 'public';
+};
+
+// ============================================
+// 🛠️ UTILITY FUNCTIONS
+// ============================================
+
+/**
+ * Check if a route requires authentication
+ * @param pathname - The pathname to check
+ * @returns true if authentication is required
+ */
+export const requiresAuth = (pathname: string): boolean => {
+  return isProtectedRoute(pathname) || isAdminRoute(pathname);
+};
+
+/**
+ * Check if a route should redirect authenticated users
+ * @param pathname - The pathname to check
+ * @returns true if authenticated users should be redirected
+ */
+export const shouldRedirectAuth = (pathname: string): boolean => {
+  return isAuthRoute(pathname);
+};
+
+/**
+ * Get the appropriate redirect URL for unauthenticated users
+ * @param pathname - The current pathname
+ * @returns The redirect URL
+ */
+export const getAuthRedirectUrl = (pathname: string): string => {
+  if (isAuthRoute(pathname)) return '/login';
+  if (isProtectedRoute(pathname)) return '/login';
+  if (isAdminRoute(pathname)) return '/login';
+  return '/login';
+};
+
+/**
+ * Get the appropriate redirect URL for authenticated users
+ * @param pathname - The current pathname
+ * @returns The redirect URL
+ */
+export const getAuthenticatedRedirectUrl = (pathname: string): string => {
+  if (isAuthRoute(pathname)) return '/dashboard';
+  return '/dashboard';
+};
+
+// ============================================
+// 📦 EXPORTS
+// ============================================
+
+export const ROUTE_TYPES = {
+  AUTH: 'auth',
+  PROTECTED: 'protected',
+  ADMIN: 'admin',
+  WIDGET: 'widget',
+  PUBLIC: 'public',
+  API: 'api',
+  STATIC: 'static',
+} as const;
+
+export type RouteType = (typeof ROUTE_TYPES)[keyof typeof ROUTE_TYPES];

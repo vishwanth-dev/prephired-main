@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { VerifyAccountContainer } from '@/features/auth';
 
 export const metadata: Metadata = {
   title: 'Verify Account - PrepHired',
@@ -7,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function VerifyAccountPage() {
-  return <VerifyAccountContainer />;
+  return <h1>Verify Account</h1>;
 }

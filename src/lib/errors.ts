@@ -1,131 +1,145 @@
-export class AppError extends Error {
-  public readonly statusCode: number;
-  public readonly isOperational: boolean;
-  public readonly code: string;
+// lib/errors.ts
 
+/**
+ * Error Handling Utilities
+ */
+
+// ============================================
+// CUSTOM ERROR CLASSES
+// ============================================
+
+/**
+ * Base application error
+ */
+export class AppError extends Error {
   constructor(
     message: string,
-    statusCode: number = 500,
-    code: string = 'INTERNAL_ERROR',
-    isOperational: boolean = true
+    public code: string,
+    public statusCode: number = 500,
+    public details?: any
   ) {
     super(message);
-
-    this.statusCode = statusCode;
-    this.isOperational = isOperational;
-    this.code = code;
-
-    Error.captureStackTrace(this, this.constructor);
+    this.name = 'AppError';
+    Object.setPrototypeOf(this, AppError.prototype);
   }
 }
 
+/**
+ * Validation error - 400
+ */
 export class ValidationError extends AppError {
-  public readonly field?: string;
-  public readonly errors: Record<string, string[]>;
-
-  constructor(message: string, errors: Record<string, string[]> = {}, field?: string) {
-    super(message, 400, 'VALIDATION_ERROR');
-    this.errors = errors;
-    if (field !== undefined) {
-      this.field = field;
-    }
+  constructor(message: string, details?: any) {
+    super(message, 'VALIDATION_ERROR', 400, details);
+    this.name = 'ValidationError';
   }
 }
 
+/**
+ * Authentication error - 401
+ */
 export class AuthenticationError extends AppError {
   constructor(message: string = 'Authentication required') {
-    super(message, 401, 'AUTHENTICATION_ERROR');
+    super(message, 'AUTHENTICATION_ERROR', 401);
+    this.name = 'AuthenticationError';
   }
 }
 
+/**
+ * Authorization error - 403
+ */
 export class AuthorizationError extends AppError {
   constructor(message: string = 'Insufficient permissions') {
-    super(message, 403, 'AUTHORIZATION_ERROR');
+    super(message, 'AUTHORIZATION_ERROR', 403);
+    this.name = 'AuthorizationError';
   }
 }
 
+/**
+ * Not found error - 404
+ */
 export class NotFoundError extends AppError {
-  constructor(message: string = 'Resource not found') {
-    super(message, 404, 'NOT_FOUND_ERROR');
+  constructor(resource: string) {
+    super(`${resource} not found`, 'NOT_FOUND', 404);
+    this.name = 'NotFoundError';
   }
 }
 
+/**
+ * Conflict error - 409
+ */
 export class ConflictError extends AppError {
-  constructor(message: string = 'Resource already exists') {
-    super(message, 409, 'CONFLICT_ERROR');
+  constructor(message: string) {
+    super(message, 'CONFLICT', 409);
+    this.name = 'ConflictError';
   }
 }
 
-export class RateLimitError extends AppError {
-  constructor(message: string = 'Rate limit exceeded') {
-    super(message, 429, 'RATE_LIMIT_ERROR');
-  }
-}
+// ============================================
+// ERROR UTILITIES
+// ============================================
 
-export class TenantError extends AppError {
-  constructor(message: string, code: string = 'TENANT_ERROR') {
-    super(message, 400, code);
-  }
-}
-
-export class InterviewError extends AppError {
-  constructor(message: string, code: string = 'INTERVIEW_ERROR') {
-    super(message, 400, code);
-  }
-}
-
-export class VoiceProviderError extends AppError {
-  constructor(message: string, code: string = 'VOICE_PROVIDER_ERROR') {
-    super(message, 502, code);
-  }
-}
-
-export class ResumeProcessingError extends AppError {
-  constructor(message: string, code: string = 'RESUME_PROCESSING_ERROR') {
-    super(message, 400, code);
-  }
-}
-
-export class FileUploadError extends AppError {
-  constructor(message: string, code: string = 'FILE_UPLOAD_ERROR') {
-    super(message, 400, code);
-  }
-}
-
-// Error handler utility
-export const handleError = (error: Error) => {
-  if (error instanceof AppError) {
-    return {
-      success: false,
-      error: error.message,
-      code: error.code,
-      statusCode: error.statusCode,
-      ...(error instanceof ValidationError && { errors: error.errors }),
-    };
-  }
-
-  // Log unexpected errors
-  console.error('Unexpected error:', error);
-
-  return {
-    success: false,
-    error: 'An unexpected error occurred',
-    code: 'INTERNAL_ERROR',
-    statusCode: 500,
-  };
+/**
+ * Check if error is an AppError
+ */
+export const isAppError = (error: unknown): error is AppError => {
+  return error instanceof AppError;
 };
 
-// Error response helper for API routes
-export const errorResponse = (error: Error) => {
-  const errorData = handleError(error);
+/**
+ * Get error message from any error type
+ */
+export const getErrorMessage = (error: unknown): string => {
+  if (typeof error === 'string') return error;
 
-  return Response.json(
-    {
-      success: false,
-      error: errorData.error,
-      code: errorData.code,
-      ...(errorData.errors && { errors: errorData.errors }),
-    },
-    { status: errorData.statusCode }
-  );
+  if (isAppError(error)) return error.message;
+
+  if (error instanceof Error) return error.message;
+
+  if (error && typeof error === 'object' && 'message' in error) {
+    return String(error.message);
+  }
+
+  return 'An unexpected error occurred';
+};
+
+/**
+ * Get error status code
+ */
+export const getErrorStatusCode = (error: unknown): number => {
+  if (isAppError(error)) return error.statusCode;
+  return 500;
+};
+
+/**
+ * Handle API errors from axios
+ */
+export const handleApiError = (error: any): never => {
+  // Handle axios errors
+  if (error.response) {
+    const status = error.response.status;
+    const message = error.response.data?.message || error.message;
+
+    switch (status) {
+      case 400:
+        throw new ValidationError(message, error.response.data);
+      case 401:
+        throw new AuthenticationError(message);
+      case 403:
+        throw new AuthorizationError(message);
+      case 404:
+        throw new NotFoundError(message);
+      case 409:
+        throw new ConflictError(message);
+      default:
+        throw new AppError(message, 'API_ERROR', status);
+    }
+  }
+
+  // Network error
+  if (error.request) {
+    throw new AppError('Network error occurred', 'NETWORK_ERROR', 0);
+  }
+
+  // Other errors
+  throw new AppError(error.message || 'An error occurred', 'UNKNOWN_ERROR');
 };

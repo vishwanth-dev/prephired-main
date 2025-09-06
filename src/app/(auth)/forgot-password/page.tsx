@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import React from 'react';
-import { ForgotPasswordContainer } from '@/features/auth';
+
 
 export const metadata: Metadata = {
   title: 'Forgot Password - PrepHired',
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function ForgotPasswordPage() {
-  return <ForgotPasswordContainer />;
+  return <h1>Forgot Password</h1>;
 }

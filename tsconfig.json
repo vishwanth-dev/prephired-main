@@ -1,6 +1,22 @@
 {
   "compilerOptions": {
-    /* Base Options */
+    /* ============================================
+     * 🚀 PREPAI TYPESCRIPT CONFIGURATION
+     * ============================================
+     *
+     * This configuration is optimized for:
+     * - Next.js 15 with App Router
+     * - React 19 with modern patterns
+     * - Enterprise-grade type safety
+     * - Multi-tenant SaaS architecture
+     * - Atomic Design System
+     * - Feature-based modular structure
+     */
+
+    /* ============================================
+     * 📋 BASE COMPILER OPTIONS
+     * ============================================ */
+
     "target": "ES2022", // Modern JavaScript target for latest features
     "lib": ["DOM", "DOM.Iterable", "ES2022"], // Available APIs and language features
     "allowJs": true, // Allow JavaScript files alongside TypeScript
@@ -15,32 +31,59 @@
     "jsx": "preserve", // Keep JSX for Next.js processing
     "incremental": true, // Enable incremental compilation for faster builds
 
-    /* Next.js 15 specific */
+    /* ============================================
+     * ⚛️ NEXT.JS 15 OPTIMIZATIONS
+     * ============================================ */
+
     "plugins": [
       {
         "name": "next" // Next.js TypeScript plugin for optimizations
       }
     ],
 
-    /* Path Mapping for our modular architecture */
+    /* ============================================
+     * 🗂️ PATH MAPPING - FEATURE-BASED ARCHITECTURE
+     * ============================================ */
+
     "baseUrl": ".", // Base directory for module resolution
     "paths": {
+      // Core application paths
       "@/*": ["./src/*"], // Root source directory
-      "@/components/*": ["./src/components/*"], // Reusable UI components
-      "@/features/*": ["src/features/*"], // Feature-based modules
+      "@/app/*": ["./src/app/*"], // Next.js App Router pages
+
+      // Component architecture (Atomic Design)
+      "@/components/*": ["./src/components/*"], // All UI components
+      "@/ui/*": ["./src/components/ui/*"], // ShadCN UI components (atoms)
+      "@/molecules/*": ["./src/components/molecules/*"], // Atomic design molecules
+      "@/organisms/*": ["./src/components/organisms/*"], // Atomic design organisms
+      "@/templates/*": ["./src/components/templates/*"], // Page templates
+      "@/forms/*": ["./src/components/forms/*"], // Form components
+      "@/features/*": ["./src/components/features/*"], // Feature-specific components
+      "@/common/*": ["./src/components/common/*"], // Common reusable components
+      "@/providers/*": ["./src/components/providers/*"], // Context providers
+
+      // Business logic and services
+      "@/services/*": ["./src/services/*"], // API services and business logic
       "@/lib/*": ["./src/lib/*"], // Utility libraries and helpers
       "@/hooks/*": ["./src/hooks/*"], // Custom React hooks
-      "@/store/*": ["./src/store/*"], // State management (Zustand)
+      "@/store/*": ["./src/store/*"], // Zustand state management
+
+      // Configuration and types
       "@/types/*": ["./src/types/*"], // TypeScript type definitions
       "@/constants/*": ["./src/constants/*"], // Application constants
-      "@/middleware/*": ["./src/middleware/*"], // Request/response middleware
-      "@/jobs/*": ["./src/jobs/*"], // Background job processors
-      "@/events/*": ["./src/events/*"], // Event handlers and emitters
+
+      // Infrastructure
+      "@/middleware/*": ["./src/middleware/*"], // Next.js middleware
       "@/security/*": ["./src/security/*"], // Security utilities and validations
-      "@/utils/*": ["./src/utils/*"] // General utility functions
+      "@/context/*": ["./src/context/*"], // React Context providers
+      "@/styles/*": ["./src/styles/*"], // Global styles and CSS
+      "@/utils/*": ["./src/utils/*"] // Additional utility functions
     },
 
-    /* Strict Type-Checking Options */
+    /* ============================================
+     * 🔒 STRICT TYPE-CHECKING OPTIONS
+     * ============================================ */
+
     "noImplicitAny": true, // Error on expressions with implied 'any' type
     "strictNullChecks": true, // Enable strict null checking
     "strictFunctionTypes": true, // Enable strict function type checking
@@ -49,7 +92,10 @@
     "noImplicitThis": true, // Error on 'this' expressions with implied 'any' type
     "alwaysStrict": true, // Always emit 'use strict' and check for strict mode
 
-    /* Additional Checks */
+    /* ============================================
+     * 🧹 CODE QUALITY CHECKS
+     * ============================================ */
+
     "noUnusedLocals": true, // Error on unused local variables
     "noUnusedParameters": true, // Error on unused parameters
     "exactOptionalPropertyTypes": true, // Enable exact optional property types
@@ -59,11 +105,17 @@
     "noImplicitOverride": true, // Require explicit override keyword
     "noPropertyAccessFromIndexSignature": false, // Allow property access from index signatures
 
-    /* Module Resolution */
+    /* ============================================
+     * 📦 MODULE RESOLUTION
+     * ============================================ */
+
     "forceConsistentCasingInFileNames": true, // Ensure consistent file naming
     "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
 
-    /* Emit Options */
+    /* ============================================
+     * 🏗️ EMIT OPTIONS
+     * ============================================ */
+
     "declaration": false, // Don't generate declaration files (Next.js handles this)
     "declarationMap": false, // Don't generate declaration source maps
     "sourceMap": true, // Generate source maps for debugging
@@ -71,12 +123,30 @@
     "removeComments": false, // Keep comments in output
     "importHelpers": true, // Import helper functions from tslib
 
-    /* Advanced Options */
+    /* ============================================
+     * ⚡ ADVANCED OPTIONS
+     * ============================================ */
+
     "suppressImplicitAnyIndexErrors": false, // Don't suppress implicit any index errors
     "allowUnusedLabels": false, // Error on unused labels
     "allowUnreachableCode": false // Error on unreachable code
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"], // Files to include in compilation
+
+  /* ============================================
+   * 📁 INCLUDE PATTERNS
+   * ============================================ */
+
+  "include": [
+    "next-env.d.ts", // Next.js environment types
+    "**/*.ts", // All TypeScript files
+    "**/*.tsx", // All TypeScript React files
+    ".next/types/**/*.ts" // Next.js generated types
+  ],
+
+  /* ============================================
+   * 🚫 EXCLUDE PATTERNS
+   * ============================================ */
+
   "exclude": [
     "node_modules", // Exclude dependencies
     ".next", // Exclude Next.js build output
@@ -85,8 +155,16 @@
     "**/*.test.ts", // Exclude test files
     "**/*.test.tsx", // Exclude React test files
     "**/*.spec.ts", // Exclude spec files
-    "**/*.spec.tsx" // Exclude React spec files
+    "**/*.spec.tsx", // Exclude React spec files
+    "scripts/**/*", // Exclude build scripts
+    "docs/**/*", // Exclude documentation
+    "**/*.md" // Exclude markdown files
   ],
+
+  /* ============================================
+   * 🛠️ TS-NODE CONFIGURATION
+   * ============================================ */
+
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS" // Use CommonJS for ts-node (development tools)

@@ -1,226 +1,136 @@
+// lib/env.ts
+
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
-/**
- * Environment variable validation and type safety
- * This ensures all required environment variables are present and valid
- */
 export const env = createEnv({
   /**
    * Server-side environment variables
-   * These are only available on the server and never sent to the client
    */
   server: {
+    // App
+    NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+
     // Database
-    MONGODB_URI: z.string().url('Invalid MongoDB URI'),
-    DATABASE_NAME: z.string().min(1).default('enterprise-saas'),
+    MONGODB_URI: z.string().url(),
+    MONGODB_DB_NAME: z.string().min(1),
 
     // Authentication
-    NEXTAUTH_SECRET: z.string().min(32, 'NextAuth secret must be at least 32 characters'),
-    NEXTAUTH_URL: z.string().url().optional(),
-    JWT_SECRET: z.string().min(32, 'JWT secret must be at least 32 characters'),
-    ENCRYPTION_KEY: z.string().length(32, 'Encryption key must be exactly 32 characters'),
+    NEXTAUTH_SECRET: z.string().min(32),
+    NEXTAUTH_URL: z.string().url(),
+    JWT_SECRET: z.string().min(32),
 
-    // Email Configuration
-    EMAIL_PROVIDER: z.enum(['sendgrid', 'resend', 'ses', 'smtp']).default('sendgrid'),
-    SENDGRID_API_KEY: z.string().optional(),
-    SENDGRID_FROM_EMAIL: z.string().email().optional(),
-    RESEND_API_KEY: z.string().optional(),
-    SMTP_HOST: z.string().optional(),
-    SMTP_PORT: z.string().optional(),
-    SMTP_USER: z.string().optional(),
-    SMTP_PASS: z.string().optional(),
+    // AI Services
+    OPENAI_API_KEY: z.string().min(1),
+    OPENAI_MODEL: z.string().default('gpt-4'),
+
+    // Voice Providers
+    MURF_API_KEY: z.string().optional(),
+    ELEVENLABS_API_KEY: z.string().optional(),
+    PLAYHT_API_KEY: z.string().optional(),
+    AZURE_SPEECH_KEY: z.string().optional(),
+    AZURE_SPEECH_REGION: z.string().optional(),
 
     // File Storage
-    STORAGE_PROVIDER: z.enum(['s3', 'cloudinary', 'local']).default('local'),
-    AWS_ACCESS_KEY_ID: z.string().optional(),
-    AWS_SECRET_ACCESS_KEY: z.string().optional(),
-    AWS_REGION: z.string().default('us-east-1'),
-    AWS_S3_BUCKET: z.string().optional(),
-    CLOUDINARY_CLOUD_NAME: z.string().optional(),
-    CLOUDINARY_API_KEY: z.string().optional(),
-    CLOUDINARY_API_SECRET: z.string().optional(),
+    UPLOAD_DIR: z.string().default('./uploads'),
+    MAX_FILE_SIZE: z.string().transform(Number).default(10485760),
+    ALLOWED_FILE_TYPES: z
+      .string()
+      .default(
+        'application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ),
 
-    // Redis (Optional)
-    REDIS_URL: z.string().url().optional(),
-    REDIS_PASSWORD: z.string().optional(),
+    // Email Service
+    SMTP_HOST: z.string().optional(),
+    SMTP_PORT: z.string().transform(Number).optional(),
+    SMTP_USER: z.string().email().optional(),
+    SMTP_PASS: z.string().optional(),
+    FROM_EMAIL: z.string().email().default('noreply@prepai.com'),
+    FROM_NAME: z.string().default('prepAI'),
 
-    // Monitoring
-    SENTRY_DSN: z.string().url().optional(),
-    SENTRY_ORG: z.string().optional(),
-    SENTRY_PROJECT: z.string().optional(),
-
-    // OAuth Providers
-    GOOGLE_CLIENT_ID: z.string().optional(),
-    GOOGLE_CLIENT_SECRET: z.string().optional(),
-    GITHUB_CLIENT_ID: z.string().optional(),
-    GITHUB_CLIENT_SECRET: z.string().optional(),
-    MICROSOFT_CLIENT_ID: z.string().optional(),
-    MICROSOFT_CLIENT_SECRET: z.string().optional(),
-
-    // Future: Payment Processing
-    STRIPE_SECRET_KEY: z.string().optional(),
-    STRIPE_WEBHOOK_SECRET: z.string().optional(),
-
-    // Future: External APIs
-    OPENAI_API_KEY: z.string().optional(),
+    // Pusher (server-side)
     PUSHER_APP_ID: z.string().optional(),
     PUSHER_SECRET: z.string().optional(),
+    PUSHER_CLUSTER: z.string().default('us2'),
 
-    // Development & Testing
-    DEBUG: z
-      .string()
-      .transform(val => val === 'true')
-      .default(false),
-    SKIP_EMAIL: z
-      .string()
-      .transform(val => val === 'true')
-      .default(true),
-    TEST_DATABASE_URL: z.string().url().optional(),
-
-    // Rate Limiting
-    RATE_LIMIT_REQUESTS: z.string().transform(Number).default(100),
+    // Security
+    BCRYPT_ROUNDS: z.string().transform(Number).default(12),
+    RATE_LIMIT_MAX: z.string().transform(Number).default(100),
     RATE_LIMIT_WINDOW: z.string().transform(Number).default(900000),
 
     // Multi-tenancy
-    DEFAULT_TENANT_ID: z.string().default('default'),
-    TENANT_STRATEGY: z.enum(['shared', 'separate', 'hybrid']).default('shared'),
+    DEFAULT_TENANT_PLAN: z.enum(['free', 'pro', 'enterprise']).default('free'),
+    MAX_INTERVIEWS_FREE: z.string().transform(Number).default(5),
+    MAX_CANDIDATES_FREE: z.string().transform(Number).default(10),
 
-    // Feature Flags
-    FEATURE_ANALYTICS: z
-      .string()
-      .transform(val => val === 'true')
-      .default(true),
-    FEATURE_BILLING: z
-      .string()
-      .transform(val => val === 'true')
-      .default(false),
-    FEATURE_INTEGRATIONS: z
-      .string()
-      .transform(val => val === 'true')
-      .default(false),
-    FEATURE_WIDGET: z
-      .string()
-      .transform(val => val === 'true')
-      .default(false),
-    FEATURE_REAL_TIME: z
-      .string()
-      .transform(val => val === 'true')
-      .default(false),
+    // Widget
+    WIDGET_ALLOWED_ORIGINS: z.string().default('*'),
   },
 
   /**
-   * Client-side environment variables
-   * These are sent to the client and should not contain sensitive data
+   * Client-side environment variables (NEXT_PUBLIC_*)
    */
   client: {
-    NEXT_PUBLIC_APP_NAME: z.string().default('Enterprise SaaS App'),
-    NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
-    NEXT_PUBLIC_APP_DOMAIN: z.string().default('localhost:3000'),
-
-    // Analytics
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: z.string().optional(),
-
-    // Future: Stripe Public Key
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
-
-    // Future: Pusher Public Config
+    NEXT_PUBLIC_APP_URL: z.string().url(),
+    NEXT_PUBLIC_APP_NAME: z.string().min(1),
+    NEXT_PUBLIC_API_URL: z.string().url(),
     NEXT_PUBLIC_PUSHER_KEY: z.string().optional(),
-    NEXT_PUBLIC_PUSHER_CLUSTER: z.string().default('us2'),
-
-    // Feature Flags (Public)
-    NEXT_PUBLIC_ENABLE_ANALYTICS: z
-      .string()
-      .transform(val => val === 'true')
-      .default(true),
-    NEXT_PUBLIC_ENABLE_WIDGET: z
-      .string()
-      .transform(val => val === 'true')
-      .default(false),
+    NEXT_PUBLIC_WIDGET_CDN_URL: z.string().url().optional(),
   },
 
   /**
-   * Environment variables that are available on both server and client
-   * Use this for variables that need to be accessible in both contexts
-   */
-  shared: {
-    NODE_ENV: z.enum(['development', 'staging', 'production']).default('development'),
-  },
-
-  /**
-   * Destructure all variables from process.env
-   * This ensures the validation runs on both server and client
+   * Runtime environment variables
    */
   runtimeEnv: {
-    // Server-side
+    // Server
+    NODE_ENV: process.env.NODE_ENV,
     MONGODB_URI: process.env.MONGODB_URI,
-    DATABASE_NAME: process.env.DATABASE_NAME,
+    MONGODB_DB_NAME: process.env.MONGODB_DB_NAME,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     JWT_SECRET: process.env.JWT_SECRET,
-    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
-    EMAIL_PROVIDER: process.env.EMAIL_PROVIDER,
-    SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
-    SENDGRID_FROM_EMAIL: process.env.SENDGRID_FROM_EMAIL,
-    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENAI_MODEL: process.env.OPENAI_MODEL,
+    MURF_API_KEY: process.env.MURF_API_KEY,
+    ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
+    PLAYHT_API_KEY: process.env.PLAYHT_API_KEY,
+    AZURE_SPEECH_KEY: process.env.AZURE_SPEECH_KEY,
+    AZURE_SPEECH_REGION: process.env.AZURE_SPEECH_REGION,
+    UPLOAD_DIR: process.env.UPLOAD_DIR,
+    MAX_FILE_SIZE: process.env.MAX_FILE_SIZE,
+    ALLOWED_FILE_TYPES: process.env.ALLOWED_FILE_TYPES,
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_PORT: process.env.SMTP_PORT,
     SMTP_USER: process.env.SMTP_USER,
     SMTP_PASS: process.env.SMTP_PASS,
-    STORAGE_PROVIDER: process.env.STORAGE_PROVIDER,
-    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
-    AWS_REGION: process.env.AWS_REGION,
-    AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
-    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
-    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
-    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
-    REDIS_URL: process.env.REDIS_URL,
-    REDIS_PASSWORD: process.env.REDIS_PASSWORD,
-    SENTRY_DSN: process.env.SENTRY_DSN,
-    SENTRY_ORG: process.env.SENTRY_ORG,
-    SENTRY_PROJECT: process.env.SENTRY_PROJECT,
-    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
-    MICROSOFT_CLIENT_ID: process.env.MICROSOFT_CLIENT_ID,
-    MICROSOFT_CLIENT_SECRET: process.env.MICROSOFT_CLIENT_SECRET,
-    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    FROM_EMAIL: process.env.FROM_EMAIL,
+    FROM_NAME: process.env.FROM_NAME,
     PUSHER_APP_ID: process.env.PUSHER_APP_ID,
     PUSHER_SECRET: process.env.PUSHER_SECRET,
-    DEBUG: process.env.DEBUG,
-    SKIP_EMAIL: process.env.SKIP_EMAIL,
-    TEST_DATABASE_URL: process.env.TEST_DATABASE_URL,
-    RATE_LIMIT_REQUESTS: process.env.RATE_LIMIT_REQUESTS,
+    PUSHER_CLUSTER: process.env.PUSHER_CLUSTER,
+    BCRYPT_ROUNDS: process.env.BCRYPT_ROUNDS,
+    RATE_LIMIT_MAX: process.env.RATE_LIMIT_MAX,
     RATE_LIMIT_WINDOW: process.env.RATE_LIMIT_WINDOW,
-    DEFAULT_TENANT_ID: process.env.DEFAULT_TENANT_ID,
-    TENANT_STRATEGY: process.env.TENANT_STRATEGY,
-    FEATURE_ANALYTICS: process.env.FEATURE_ANALYTICS,
-    FEATURE_BILLING: process.env.FEATURE_BILLING,
-    FEATURE_INTEGRATIONS: process.env.FEATURE_INTEGRATIONS,
-    FEATURE_WIDGET: process.env.FEATURE_WIDGET,
-    FEATURE_REAL_TIME: process.env.FEATURE_REAL_TIME,
+    DEFAULT_TENANT_PLAN: process.env.DEFAULT_TENANT_PLAN,
+    MAX_INTERVIEWS_FREE: process.env.MAX_INTERVIEWS_FREE,
+    MAX_CANDIDATES_FREE: process.env.MAX_CANDIDATES_FREE,
+    WIDGET_ALLOWED_ORIGINS: process.env.WIDGET_ALLOWED_ORIGINS,
 
-    // Client-side
-    NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+    // Client
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-    NEXT_PUBLIC_APP_DOMAIN: process.env.NEXT_PUBLIC_APP_DOMAIN,
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID,
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
-    NEXT_PUBLIC_PUSHER_CLUSTER: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-    NEXT_PUBLIC_ENABLE_ANALYTICS: process.env.NEXT_PUBLIC_ENABLE_ANALYTICS,
-    NEXT_PUBLIC_ENABLE_WIDGET: process.env.NEXT_PUBLIC_ENABLE_WIDGET,
-
-    // Shared
-    NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_WIDGET_CDN_URL: process.env.NEXT_PUBLIC_WIDGET_CDN_URL,
   },
 
   /**
-   * Skip validation in development for optional variables
+   * Skip validation when needed
    */
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
+
+  /**
+   * Empty strings as undefined
+   */
+  emptyStringAsUndefined: true,
 });

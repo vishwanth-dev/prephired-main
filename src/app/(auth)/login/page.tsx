@@ -1,4 +1,3 @@
-import { LoginFormContainer } from '@/features/auth';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
-  return <LoginFormContainer />;
+  return <h1>Login</h1>;
 }
