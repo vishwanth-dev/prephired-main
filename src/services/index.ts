@@ -51,9 +51,7 @@ export {
   AuthorizationError,
   NotFoundError,
   ConflictError,
-  RateLimitError,
-  handleError,
-  errorResponse,
+  handleApiError,
 } from '@/lib/errors';
 
 // Environment validation

@@ -31,7 +31,7 @@
 'use client';
 
 import React from 'react';
-import { useAuth } from '@/context/auth.context';
+import { useAuth } from '@/hooks/use-auth';
 import { UserStatus } from '@/types/backend';
 import { cn } from '@/lib/utils';
 

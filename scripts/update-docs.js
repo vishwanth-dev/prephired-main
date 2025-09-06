@@ -35,6 +35,9 @@ function getFileStats() {
     types: 0,
     routes: 0,
     dependencies: 0,
+    uiComponents: 0,
+    authComponents: 0,
+    guards: 0,
   };
 
   function scanDirectory(dir) {
@@ -53,9 +56,24 @@ function getFileStats() {
       } else if (stat.isFile()) {
         stats.totalFiles++;
 
-        // Categorize files
-        if (item.includes('component') || item.endsWith('.tsx')) {
+        // Categorize files with more specific logic
+        if (item.endsWith('.tsx') || item.endsWith('.jsx')) {
           stats.components++;
+
+          // Count UI components specifically
+          if (dir.includes('/ui/') || dir.includes('\\ui\\')) {
+            stats.uiComponents++;
+          }
+
+          // Count auth components specifically
+          if (dir.includes('/auth/') || dir.includes('\\auth\\')) {
+            stats.authComponents++;
+          }
+
+          // Count guard components
+          if (item.includes('guard') || dir.includes('/guards/') || dir.includes('\\guards\\')) {
+            stats.guards++;
+          }
         } else if (item.includes('hook') || item.startsWith('use-')) {
           stats.hooks++;
         } else if (item.includes('service')) {
@@ -140,6 +158,9 @@ function updateProjectOverview() {
 |--------|-------|
 | **Total Files** | ${stats.totalFiles}+ |
 | **Components** | ${stats.components}+ |
+| **UI Components** | ${stats.uiComponents}+ |
+| **Auth Components** | ${stats.authComponents}+ |
+| **Guard Components** | ${stats.guards}+ |
 | **Hooks** | ${stats.hooks}+ |
 | **Services** | ${stats.services}+ |
 | **Types** | ${stats.types}+ |
@@ -210,16 +231,28 @@ npm run dev
 \`\`\`
 src/
 ├── components/
-│   ├── ui/                    # ShadCN UI components
+│   ├── ui/                    # ShadCN UI components (32+ components)
 │   ├── features/              # Feature-specific components
-│   │   ├── auth/              # Authentication components
+│   │   ├── auth/              # Authentication components (5 components)
 │   │   ├── dashboard/         # Dashboard components
 │   │   └── resume-analysis/   # Resume analysis components
-│   └── common/                # Shared components
+│   ├── common/                # Shared components
+│   │   └── guards/            # Authentication & permission guards (3 guards)
+│   ├── forms/                 # Form components
+│   ├── layout/                # Layout components
+│   ├── organisms/             # Complex UI organisms
+│   ├── providers/             # Context providers
+│   └── templates/              # Page templates
 ├── services/
-│   ├── api/                   # API service classes
+│   ├── api/                   # API service classes (8 services)
 │   ├── auth/                  # Authentication services
 │   └── [feature]/             # Feature-specific services
+├── hooks/
+│   ├── auth/                  # Authentication hooks (3 hooks)
+│   ├── common/                # Common utility hooks (6 hooks)
+│   ├── form/                  # Form-related hooks
+│   ├── ui/                    # UI-specific hooks
+│   └── utils/                  # Utility hooks (14 hooks)
 └── types/
     ├── auth/                  # Authentication types
     ├── dashboard/             # Dashboard types
@@ -258,7 +291,7 @@ import { z } from 'zod';
 import axios from 'axios';
 
 // 3. Internal imports (absolute paths)
-import { Button } from '@/components/ui/button';
+import { Button } from '@/design-system';
 import { useAuth } from '@/hooks/use-auth';
 import { authService } from '@/services/auth';
 
@@ -275,7 +308,12 @@ import './component.css';
 #### **Files to Know**
 - \`src/store/auth-store.ts\` - Authentication state management
 - \`src/hooks/use-auth.ts\` - Main authentication hook
-- \`src/services/auth/auth.service.ts\` - Authentication API service
+- \`src/hooks/auth/use-auth-guard.ts\` - Authentication guard hook
+- \`src/hooks/auth/use-session.ts\` - Session management hook
+- \`src/services/api/auth.service.ts\` - Authentication API service
+- \`src/components/common/guards/auth.guard.tsx\` - Authentication guard component
+- \`src/components/common/guards/permission.guard.tsx\` - Permission guard component
+- \`src/components/features/auth/auth-guard.tsx\` - Feature-specific auth guard
 - \`src/middleware/middleware.ts\` - Route protection middleware
 - \`src/lib/validations/auth.ts\` - Authentication form validation
 
@@ -287,14 +325,34 @@ const { user, isAuthenticated, login, logout } = useAuth();
 // Using auth store directly
 const { user, token } = useAuthStore();
 
-// Authentication guard
-const AuthGuard = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+// Authentication guard component
+import { AuthGuard } from '@/components/common/guards';
+
+const ProtectedPage = () => (
+  <AuthGuard fallback={<LoginForm />}>
+    <Dashboard />
+  </AuthGuard>
+);
+
+// Permission guard component
+import { PermissionGuard } from '@/components/common/guards';
+
+const AdminPage = () => (
+  <PermissionGuard permissions={['admin']} fallback={<AccessDenied />}>
+    <AdminDashboard />
+  </PermissionGuard>
+);
+
+// Using auth guard hook
+import { useAuthGuard } from '@/hooks/auth/use-auth-guard';
+
+const MyComponent = () => {
+  const { isAuthenticated, isLoading, user } = useAuthGuard();
   
   if (isLoading) return <LoadingSpinner />;
   if (!isAuthenticated) return <LoginForm />;
   
-  return <>{children}</>;
+  return <Dashboard user={user} />;
 };
 \`\`\`
 
@@ -339,6 +397,14 @@ The PrepAI API provides comprehensive endpoints for authentication, user managem
 - **Development**: \`http://localhost:5000/api\`
 - **Production**: \`https://api.prephired.com\`
 - **Widget API**: \`https://widget.prephired.com/api\`
+
+### **API Services Available**
+- **Auth Service**: User authentication and session management
+- **User Service**: User profile and account management
+- **Resume Service**: Resume upload, analysis, and optimization
+- **Tenant Service**: Multi-tenant organization management
+- **Group Service**: User group and team management
+- **Role Service**: Role-based access control
 
 ### **Authentication**
 All protected endpoints require a Bearer token in the Authorization header:

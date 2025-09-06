@@ -13,7 +13,7 @@
  * ```
  */
 
-import { IUser, IAuthResponse } from './backend';
+import { IUser } from './backend';
 
 // ============================================
 // 🔐 AUTHENTICATION SERVICE INTERFACES

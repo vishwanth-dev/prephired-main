@@ -1,14 +1,12 @@
 /* src/styles/app.css */
 
-/* Import Tailwind v4 */
 @import "tailwindcss";
 
 /* ========================================
-   THEME CONFIGURATION (Tailwind v4)
-======================================== */
-   
+   EXTEND TAILWIND'S THEME
+   ======================================== */
 @theme {
-  /* Colors */
+  /* Extend color palette from Figma */
   --color-primary-50: #fff5f3;
   --color-primary-100: #ffeee3;
   --color-primary-200: #ffd0bc;
@@ -20,285 +18,159 @@
   --color-primary-800: #b53c1a;
   --color-primary-900: #8b2f14;
 
-  --color-gray-50: #f7f9fb;
-  --color-gray-100: #f1f1f1;
-  --color-gray-200: #e5e5e5;
-  --color-gray-300: #dfdfdf;
-  --color-gray-400: #b1b1b1;
-  --color-gray-500: #989898;
-  --color-gray-600: #626262;
-  --color-gray-700: #515151;
-  --color-gray-800: #363848;
-  --color-gray-900: #252d3b;
-
+  /* Semantic colors */
   --color-success: #26a60d;
   --color-warning: #d78400;
   --color-error: #ff6347;
   --color-info: #645fff;
 
-  /* Typography */
-  --font-family-sans: 'Poppins', system-ui, -apple-system, sans-serif;
-  --font-family-mono: 'Inter', ui-monospace, monospace;
-
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
-  --font-size-3xl: 1.75rem;
-  --font-size-4xl: 2.25rem;
-
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-
-  --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.75;
-
-  /* Spacing */
-  --spacing-0: 0;
-  --spacing-1: 0.25rem;
-  --spacing-2: 0.5rem;
-  --spacing-3: 0.75rem;
-  --spacing-4: 1rem;
-  --spacing-5: 1.25rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
-  --spacing-9: 2.25rem;
-  --spacing-10: 2.5rem;
-  --spacing-12: 3rem;
-  --spacing-15: 3.75rem;
-  --spacing-16: 4rem;
-  --spacing-20: 5rem;
-  --spacing-24: 6rem;
-
-  /* Border Radius */
-  --radius-sm: 0.125rem;
-  --radius-DEFAULT: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-2xl: 1rem;
-  --radius-3xl: 1.5rem;
-  --radius-full: 9999px;
+  /* Custom radius from Figma */
   --radius-button: 3.125rem;
   --radius-input: 3.75rem;
   --radius-card: 1.25rem;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-DEFAULT: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px 0 rgb(0 0 0 / 0.06);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
-  --shadow-lg: -9px 14px 96px 0px rgb(0 0 0 / 0.08);
+  /* Custom shadows from Figma */
   --shadow-card: 0px 4px 20px 0px rgb(144 144 144 / 0.2);
-
-  /* Borders */
-  --border-width-DEFAULT: 1px;
-  --border-width-0: 0;
-  --border-width-2: 2px;
-  --border-width-4: 4px;
-
-  /* Animation */
-  --animate-duration: 300ms;
-  --animate-duration-fast: 150ms;
-  --animate-duration-slow: 500ms;
+  --shadow-figma: -9px 14px 96px 0px rgb(0 0 0 / 0.08);
 }
 
 /* ========================================
-   CUSTOM PROPERTIES & SEMANTIC TOKENS
+   CSS VARIABLES - Using hex for simplicity
    ======================================== */
 :root {
-  /* Semantic color aliases */
-  --color-primary: var(--color-primary-500);
-  --color-primary-dark: var(--color-primary-600);
-  --color-primary-light: var(--color-primary-100);
+  /* Core theme variables */
+  --background: #ffffff;
+  --foreground: #363848;
+  --card: #ffffff;
+  --card-foreground: #363848;
+  --popover: #ffffff;
+  --popover-foreground: #363848;
+  --primary: #f0806c;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f1f1;
+  --secondary-foreground: #363848;
+  --muted: #f7f9fb;
+  --muted-foreground: #626262;
+  --accent: #ffeee3;
+  --accent-foreground: #363848;
+  --destructive: #ff6347;
+  --destructive-foreground: #ffffff;
+  --border: #dfdfdf;
+  --input: #dfdfdf;
+  --ring: #f0806c;
   
-  /* Backgrounds */
-  --bg-app: #ffffff;
-  --bg-elevated: #ffffff;
-  --bg-input: #ffffff;
-  --bg-overlay: rgb(0 0 0 / 0.5);
+  /* Radius */
+  --radius: 0.5rem;
   
-  /* Text colors */
-  --text-primary: var(--color-gray-800);
-  --text-secondary: var(--color-gray-600);
-  --text-tertiary: var(--color-gray-500);
-  --text-placeholder: var(--color-gray-500);
-  --text-inverse: #ffffff;
-  --text-link: var(--color-primary-600);
+  /* Sidebar (if needed) */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #363848;
+  --sidebar-primary: #f0806c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ffeee3;
+  --sidebar-accent-foreground: #363848;
+  --sidebar-border: #dfdfdf;
+  --sidebar-ring: #f0806c;
+}
+
+.dark {
+  --background: #17181a;
+  --foreground: #e8eaed;
+  --card: #1f2124;
+  --card-foreground: #e8eaed;
+  --popover: #1f2124;
+  --popover-foreground: #e8eaed;
+  --primary: #fb9b8a;
+  --primary-foreground: #17181a;
+  --secondary: #2a2a2a;
+  --secondary-foreground: #e8eaed;
+  --muted: #2a2a2a;
+  --muted-foreground: #a8a8a8;
+  --accent: #3a3a3a;
+  --accent-foreground: #e8eaed;
+  --destructive: #ff6347;
+  --destructive-foreground: #e8eaed;
+  --border: #3a3a3a;
+  --input: #3a3a3a;
+  --ring: #fb9b8a;
   
-  /* Borders */
-  --border-color: var(--color-gray-300);
-  --border-subtle: var(--color-gray-200);
-  --border-strong: var(--color-gray-400);
-  
-  /* Component specific */
-  --input-height: 3.5rem;
-  --button-height: 3.25rem;
-  --navbar-height: 4rem;
-  
-  /* Focus ring */
-  --ring-color: var(--color-primary-500);
-  --ring-width: 2px;
-  --ring-offset: 2px;
-  
-  /* Gradients from Figma */
-  --gradient-peach: linear-gradient(180deg, rgba(254, 236, 236, 1) 0%, rgba(255, 255, 255, 1) 100%);
-  --gradient-coral: linear-gradient(152deg, rgba(255, 99, 71, 1) 0%, rgba(255, 255, 255, 1) 61%);
+  /* Sidebar dark */
+  --sidebar: #1f2124;
+  --sidebar-foreground: #e8eaed;
+  --sidebar-primary: #fb9b8a;
+  --sidebar-primary-foreground: #17181a;
+  --sidebar-accent: #3a3a3a;
+  --sidebar-accent-foreground: #e8eaed;
+  --sidebar-border: #3a3a3a;
+  --sidebar-ring: #fb9b8a;
 }
 
 /* ========================================
-   DARK MODE
-   ======================================== */
-[data-theme="dark"] {
-  --bg-app: #17181a;
-  --bg-elevated: #1f2124;
-  --bg-input: #2a2a2a;
-  
-  --text-primary: #e8eaed;
-  --text-secondary: #a8a8a8;
-  --text-tertiary: #7a7a7a;
-  --text-placeholder: #6a6a6a;
-  
-  --border-color: #3a3a3a;
-  --border-subtle: #2b2e33;
-  --border-strong: #4a4a4a;
-  
-  --color-primary: var(--color-primary-400);
-  --color-primary-dark: var(--color-primary-300);
-  
-  color-scheme: dark;
-}
-
-/* ========================================
-   BASE STYLES
+   BASE LAYER - Direct CSS properties
    ======================================== */
 @layer base {
   * {
-    border-color: var(--border-color);
+    border-color: var(--border);
   }
   
-  html {
-    font-family: var(--font-family-sans);
-    color: var(--text-primary);
-    background: var(--bg-app);
-  }
-  
-  /* Focus styles */
-  :where(button, a, input, textarea, select):focus-visible {
-    outline: var(--ring-width) solid var(--ring-color);
-    outline-offset: var(--ring-offset);
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
   }
 }
 
 /* ========================================
-   UTILITY EXTENSIONS
+   CUSTOM UTILITIES
    ======================================== */
-@utility {
-  /* Custom border radius utilities */
-  .rounded-button {
-    border-radius: var(--radius-button);
-  }
-  
-  .rounded-input {
-    border-radius: var(--radius-input);
-  }
-  
-  .rounded-card {
-    border-radius: var(--radius-card);
-  }
-  
-  /* Custom shadow utilities */
-  .shadow-card {
-    box-shadow: var(--shadow-card);
-  }
-  
-  /* Text utilities */
-  .text-primary {
-    color: var(--text-primary);
-  }
-  
-  .text-secondary {
-    color: var(--text-secondary);
-  }
-  
-  .text-tertiary {
-    color: var(--text-tertiary);
-  }
-  
-  .text-placeholder {
-    color: var(--text-placeholder);
-  }
-  
-  /* Background utilities */
-  .bg-elevated {
-    background-color: var(--bg-elevated);
-  }
-  
-  .bg-input {
-    background-color: var(--bg-input);
-  }
-  
-  /* Gradient utilities */
-  .bg-gradient-peach {
-    background: var(--gradient-peach);
-  }
-  
-  .bg-gradient-coral {
-    background: var(--gradient-coral);
-  }
-  
-  /* Component height utilities */
-  .h-input {
-    height: var(--input-height);
-  }
-  
-  .h-button {
-    height: var(--button-height);
-  }
+
+/* Animation utilities */
+@utility animate-fade-in {
+  animation: fade-in 0.3s ease-in-out;
+}
+
+@utility animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+/* Layout utilities */
+@utility page-wrapper {
+  margin-left: 270px;
+  transition: margin-left 0.2s ease-in;
+}
+
+/* Figma-specific utilities */
+@utility rounded-button {
+  border-radius: var(--radius-button);
+}
+
+@utility rounded-input {
+  border-radius: var(--radius-input);
+}
+
+@utility rounded-card {
+  border-radius: var(--radius-card);
+}
+
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
 }
 
 /* ========================================
-   COMPONENT STYLES
+   KEYFRAMES
    ======================================== */
-@layer components {
-  /* Button base */
-  .btn {
-    @apply inline-flex items-center justify-center font-semibold transition-colors;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
-    border-radius: var(--radius-button);
-    height: var(--button-height);
-    padding: 0 var(--spacing-10);
-    font-size: var(--font-size-lg);
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { 
+    transform: translateY(10px);
+    opacity: 0;
   }
-  
-  .btn-primary {
-    @apply btn bg-primary-500 text-white hover:bg-primary-600;
-  }
-  
-  .btn-secondary {
-    @apply btn bg-gray-100 text-gray-800 hover:bg-gray-200;
-  }
-  
-  /* Input base */
-  .input {
-    @apply w-full bg-input text-primary placeholder:text-placeholder;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-input);
-    height: var(--input-height);
-    padding: 0 var(--spacing-6);
-    font-size: var(--font-size-base);
-  }
-  
-  /* Card */
-  .card {
-    @apply bg-elevated shadow-card;
-    border-radius: var(--radius-card);
-    padding: var(--spacing-6);
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

@@ -8,6 +8,7 @@
 **PrepAI** is a comprehensive AI-powered resume preparation and analysis platform built with Next.js 15, featuring multi-tenancy, enterprise-grade security, and modern React patterns.
 
 ### **🎯 Core Features**
+
 - **AI Resume Analysis**: Intelligent resume optimization and feedback
 - **Multi-Tenant SaaS**: Subdomain-based tenant isolation
 - **Authentication System**: JWT-based auth with role-based access control
@@ -34,6 +35,7 @@
 | **Real-time** | Pusher | Live updates and notifications |
 
 ### **Architecture Principles**
+
 - **🧩 Feature-Based Modular Design**: Self-contained business modules
 - **🏢 Multi-Tenant SaaS Patterns**: Scalable tenant isolation
 - **⚛️ Atomic Design System**: Clear UI component hierarchy
@@ -59,6 +61,7 @@
 ## 🔄 **Auto-Update Information**
 
 This document is automatically updated when:
+
 - New files are added to the project
 - Existing files are modified or moved
 - Dependencies are updated

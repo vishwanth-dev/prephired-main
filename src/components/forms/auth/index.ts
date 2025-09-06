@@ -21,11 +21,7 @@
 // 📝 FORM COMPONENTS
 // ============================================
 
-export { default as LoginForm } from './login-form';
-export { default as RegistrationForm } from './register-form';
-export { default as ForgotPasswordForm } from './forgot-password-form';
-export { default as ResetPasswordForm } from './reset-password-form';
-export { default as VerifyOTPForm } from './verify-otp-form';
+
 
 // ============================================
 // 🎯 TYPE EXPORTS

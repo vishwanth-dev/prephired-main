@@ -94,13 +94,16 @@ export class UserService extends BaseApiService {
   async getUsers(params?: ISearchParams): Promise<IPaginatedResponse<IUser>> {
     const queryParams = new URLSearchParams();
 
-    if (params?.pagination) {
-      queryParams.append('page', params.pagination.page?.toString() || '1');
-      queryParams.append('limit', params.pagination.limit?.toString() || '10');
+    if (params?.page) {
+      queryParams.append('page', params.page.toString());
     }
 
-    if (params?.query) {
-      queryParams.append('search', params.query);
+    if (params?.limit) {
+      queryParams.append('limit', params.limit.toString());
+    }
+
+    if (params?.search) {
+      queryParams.append('search', params.search);
     }
 
     if (params?.filters) {
@@ -112,7 +115,8 @@ export class UserService extends BaseApiService {
     }
 
     const url = `${USER_ENDPOINTS.LIST_USERS}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-    return this.get<IPaginatedResponse<IUser>['data']>(url);
+    const response = await this.get<IPaginatedResponse<IUser>>(url);
+    return response.data;
   }
 
   /**
@@ -121,11 +125,12 @@ export class UserService extends BaseApiService {
    */
   async searchUsers(
     filters: IUserSearchFilters,
-    pagination?: any
+    pagination?: { page?: number; limit?: number }
   ): Promise<IPaginatedResponse<IUser>> {
     const params: ISearchParams = {
       filters,
-      pagination,
+      ...(pagination?.page !== undefined && { page: pagination.page }),
+      ...(pagination?.limit !== undefined && { limit: pagination.limit }),
     };
     return this.getUsers(params);
   }

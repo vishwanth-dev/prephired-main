@@ -5,7 +5,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth, useAuthGuard } from '@/context/auth.context';
+import { useAuth, useGuestOnly, useUser, useRegistrationFlow } from '@/hooks/use-auth';
 import { UserStatus } from '@/types/backend';
 
 // ============================================
@@ -33,12 +33,19 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({
   fallback = <LoginRequired />,
   loadingComponent = <AuthLoading />,
 }) => {
-  const { isAuthorized, isLoading } = useAuthGuard({
-    requireAuth,
-    requireStatus: requireStatus || undefined,
-    redirectTo,
-    fallback,
-  });
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
+  // ============================================
+  // AUTH LOGIC
+  // ============================================
+
+  useEffect(() => {
+    if (!isLoading && requireAuth && !isAuthenticated) {
+      const returnUrl = encodeURIComponent(window.location.pathname);
+      router.push(`${redirectTo}?returnUrl=${returnUrl}`);
+    }
+  }, [isLoading, requireAuth, isAuthenticated, redirectTo, router]);
 
   // ============================================
   // RENDER LOGIC
@@ -48,7 +55,12 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({
     return <>{loadingComponent}</>;
   }
 
-  if (!isAuthorized) {
+  if (requireAuth && !isAuthenticated) {
+    return <>{fallback}</>;
+  }
+
+  // Check status requirements if specified
+  if (requireStatus && user && !requireStatus.includes(user.status)) {
     return <>{fallback}</>;
   }
 
@@ -70,21 +82,14 @@ export const PublicRouteGuard: React.FC<PublicRouteGuardProps> = ({
   redirectTo = '/dashboard',
   loadingComponent = <AuthLoading />,
 }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      router.push(redirectTo);
-    }
-  }, [isLoading, isAuthenticated, redirectTo, router]);
+  const { isGuest, isLoading } = useGuestOnly(redirectTo as '/dashboard');
 
   if (isLoading) {
     return <>{loadingComponent}</>;
   }
 
-  if (isAuthenticated) {
-    return null; // Will redirect
+  if (!isGuest) {
+    return null; // Will redirect via useGuestOnly hook
   }
 
   return <>{children}</>;
@@ -107,13 +112,14 @@ export const StatusGuard: React.FC<StatusGuardProps> = ({
   fallback = <StatusNotAllowed allowedStatuses={allowedStatuses} />,
   loadingComponent = <AuthLoading />,
 }) => {
-  const { user, isLoading } = useAuth();
+  const { user, userStatus } = useUser();
+  const { isLoading } = useAuth();
 
   if (isLoading) {
     return <>{loadingComponent}</>;
   }
 
-  if (!user || !allowedStatuses.includes(user.status)) {
+  if (!user || !userStatus || !allowedStatuses.includes(userStatus)) {
     return <>{fallback}</>;
   }
 
@@ -137,7 +143,7 @@ export const RegistrationStepGuard: React.FC<RegistrationStepGuardProps> = ({
   fallback = <RegistrationStepNotAllowed allowedSteps={allowedSteps} />,
   loadingComponent = <AuthLoading />,
 }) => {
-  const { registrationStep, isLoading } = useAuth();
+  const { registrationStep, isLoading } = useRegistrationFlow();
 
   if (isLoading) {
     return <>{loadingComponent}</>;

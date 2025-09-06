@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/auth.context';
+import { useAuth, useUser } from '@/hooks/use-auth';
 import { groupService, roleService } from '@/services/api';
 import { ModuleType, PermissionAction, IPermissionCheck } from '@/types/backend';
 
@@ -44,7 +44,8 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
   redirectTo,
   requireAll = false,
 }) => {
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useUser();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [permissionState, setPermissionState] = useState<PermissionCheckState>({
     hasPermission: false,
@@ -168,7 +169,8 @@ export const MultiplePermissionGuard: React.FC<MultiplePermissionGuardProps> = (
   loadingComponent = <PermissionLoading />,
   requireAll = false,
 }) => {
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useUser();
+  const { isAuthenticated } = useAuth();
   const [permissionState, setPermissionState] = useState<PermissionCheckState>({
     hasPermission: false,
     isLoading: true,
@@ -258,7 +260,8 @@ export const MultiplePermissionGuard: React.FC<MultiplePermissionGuardProps> = (
 // ============================================
 
 export const usePermission = (module: ModuleType, action: PermissionAction) => {
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useUser();
+  const { isAuthenticated } = useAuth();
   const [permissionCheck, setPermissionCheck] = useState<IPermissionCheck>({
     hasPermission: false,
     module,
@@ -267,14 +270,14 @@ export const usePermission = (module: ModuleType, action: PermissionAction) => {
 
   const checkPermission = async (): Promise<boolean> => {
     if (!isAuthenticated || !user) {
-      setPermissionCheck(prev => ({ ...prev, hasPermission: false }));
+      setPermissionCheck((prev: IPermissionCheck) => ({ ...prev, hasPermission: false }));
       return false;
     }
 
     try {
       const role = await roleService.getRoleByRoleId(user.role);
       if (!role) {
-        setPermissionCheck(prev => ({ ...prev, hasPermission: false }));
+        setPermissionCheck((prev: IPermissionCheck) => ({ ...prev, hasPermission: false }));
         return false;
       }
 
@@ -291,13 +294,11 @@ export const usePermission = (module: ModuleType, action: PermissionAction) => {
         hasPermission,
         module,
         action,
-        userRole: role.name,
-        userGroup: role.groups[0] || undefined,
       });
 
       return hasPermission;
     } catch (error: any) {
-      setPermissionCheck(prev => ({ ...prev, hasPermission: false }));
+      setPermissionCheck((prev: IPermissionCheck) => ({ ...prev, hasPermission: false }));
       return false;
     }
   };

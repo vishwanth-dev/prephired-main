@@ -2,38 +2,40 @@
    PROSE UTILITIES
    ========================================================================== */
 
-/* Base Prose */
-@utility prose {
-  color: rgb(31 41 55);
-  max-width: 65ch;
-  font-family: var(--font-inter);
-}
+@layer utilities {
+  /* Base Prose */
+  .prose {
+    color: rgb(31 41 55);
+    max-width: 65ch;
+    font-family: var(--font-inter);
+  }
 
-/* Prose Size Variants */
-@utility prose-sm {
-  font-size: var(--font-size-sm);
-  font-family: var(--font-inter);
-}
+  /* Prose Size Variants */
+  .prose-sm {
+    font-size: var(--font-size-sm);
+    font-family: var(--font-inter);
+  }
 
-@utility prose-lg {
-  font-size: var(--font-size-lg);
-  font-family: var(--font-inter);
-}
+  .prose-lg {
+    font-size: var(--font-size-lg);
+    font-family: var(--font-inter);
+  }
 
-@utility prose-xl {
-  font-size: var(--font-size-xl);
-  font-family: var(--font-inter);
-}
+  .prose-xl {
+    font-size: var(--font-size-xl);
+    font-family: var(--font-inter);
+  }
 
-/* Dark Mode Prose */
-@utility prose-invert {
-  color: rgb(243 244 246);
-}
+  /* Dark Mode Prose */
+  .prose-invert {
+    color: rgb(243 244 246);
+  }
 
-@utility prose-invert-code {
-  background-color: rgb(55 65 81);
-}
+  .prose-invert-code {
+    background-color: rgb(55 65 81);
+  }
 
-@utility prose-invert-pre {
-  background-color: rgb(55 65 81);
+  .prose-invert-pre {
+    background-color: rgb(55 65 81);
+  }
 }

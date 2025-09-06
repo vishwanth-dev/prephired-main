@@ -24,7 +24,12 @@ export class ResumeService extends BaseApiService {
     file: File,
     onProgress?: (progress: number) => void
   ): Promise<IFileUploadResponse> {
-    return this.uploadFile<IFileUploadResponse['data']>(RESUME_ENDPOINTS.UPLOAD, file, onProgress);
+    const response = await this.uploadFile<IFileUploadResponse>(
+      RESUME_ENDPOINTS.UPLOAD,
+      file,
+      onProgress
+    );
+    return response.data;
   }
 
   /**
@@ -225,13 +230,16 @@ export class ResumeService extends BaseApiService {
   async getResumes(params?: ISearchParams): Promise<IPaginatedResponse<IResume>> {
     const queryParams = new URLSearchParams();
 
-    if (params?.pagination) {
-      queryParams.append('page', params.pagination.page?.toString() || '1');
-      queryParams.append('limit', params.pagination.limit?.toString() || '10');
+    if (params?.page) {
+      queryParams.append('page', params.page.toString());
     }
 
-    if (params?.query) {
-      queryParams.append('search', params.query);
+    if (params?.limit) {
+      queryParams.append('limit', params.limit.toString());
+    }
+
+    if (params?.search) {
+      queryParams.append('search', params.search);
     }
 
     if (params?.filters) {
@@ -243,7 +251,8 @@ export class ResumeService extends BaseApiService {
     }
 
     const url = `${RESUME_ENDPOINTS.LIST_RESUMES}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-    return this.get<IPaginatedResponse<IResume>['data']>(url);
+    const response = await this.get<IPaginatedResponse<IResume>>(url);
+    return response.data;
   }
 
   /**

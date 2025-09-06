@@ -2,7 +2,7 @@
 'use client';
 
 import * as React from 'react';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/design-system';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 

@@ -99,25 +99,29 @@ export class TenantService extends BaseApiService {
   > {
     const queryParams = new URLSearchParams();
 
-    if (params?.pagination) {
-      queryParams.append('page', params.pagination.page?.toString() || '1');
-      queryParams.append('limit', params.pagination.limit?.toString() || '10');
+    if (params?.page) {
+      queryParams.append('page', params.page.toString());
     }
 
-    if (params?.query) {
-      queryParams.append('search', params.query);
+    if (params?.limit) {
+      queryParams.append('limit', params.limit.toString());
+    }
+
+    if (params?.search) {
+      queryParams.append('search', params.search);
     }
 
     const url = `${TENANT_ENDPOINTS.LIST_TENANT_REQUESTS}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-    return this.get<
+    const response = await this.get<
       IPaginatedResponse<{
         requestId: string;
         tenantName: string;
         tenantEmail: string;
         status: 'pending' | 'approved' | 'rejected';
         createdAt: Date;
-      }>['data']
+      }>
     >(url);
+    return response.data;
   }
 
   // ============================================
@@ -172,13 +176,16 @@ export class TenantService extends BaseApiService {
   async listTenants(params?: ISearchParams): Promise<IPaginatedResponse<ITenant>> {
     const queryParams = new URLSearchParams();
 
-    if (params?.pagination) {
-      queryParams.append('page', params.pagination.page?.toString() || '1');
-      queryParams.append('limit', params.pagination.limit?.toString() || '10');
+    if (params?.page) {
+      queryParams.append('page', params.page.toString());
     }
 
-    if (params?.query) {
-      queryParams.append('search', params.query);
+    if (params?.limit) {
+      queryParams.append('limit', params.limit.toString());
+    }
+
+    if (params?.search) {
+      queryParams.append('search', params.search);
     }
 
     if (params?.filters) {
@@ -190,7 +197,8 @@ export class TenantService extends BaseApiService {
     }
 
     const url = `${TENANT_ENDPOINTS.LIST_TENANTS}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-    return this.get<IPaginatedResponse<ITenant>['data']>(url);
+    const response = await this.get<IPaginatedResponse<ITenant>>(url);
+    return response.data;
   }
 
   /**
@@ -199,11 +207,12 @@ export class TenantService extends BaseApiService {
    */
   async searchTenants(
     filters: ITenantSearchFilters,
-    pagination?: any
+    pagination?: { page?: number; limit?: number }
   ): Promise<IPaginatedResponse<ITenant>> {
     const params: ISearchParams = {
       filters,
-      pagination,
+      ...(pagination?.page !== undefined && { page: pagination.page }),
+      ...(pagination?.limit !== undefined && { limit: pagination.limit }),
     };
     return this.listTenants(params);
   }

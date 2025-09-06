@@ -6,12 +6,14 @@
 ## 📋 **Quick Start**
 
 ### **Prerequisites**
-- Node.js 18+ 
+
+- Node.js 18+
 - MongoDB 6+
 - Git
 - VS Code (recommended)
 
 ### **Setup Commands**
+
 ```bash
 # Clone and install
 git clone <repository-url>
@@ -31,6 +33,7 @@ npm run dev
 ## 🏗️ **Architecture Patterns**
 
 ### **1. Feature-Based Organization**
+
 ```
 src/
 ├── components/
@@ -51,6 +54,7 @@ src/
 ```
 
 ### **2. Atomic Design System**
+
 ```
 components/
 ├── ui/                        # Atoms (Button, Input, etc.)
@@ -65,6 +69,7 @@ components/
 ## 🔧 **Development Standards**
 
 ### **File Naming Conventions**
+
 - **Components**: `PascalCase.tsx` (e.g., `UserProfile.tsx`)
 - **Hooks**: `use-kebab-case.ts` (e.g., `use-auth-guard.ts`)
 - **Services**: `kebab-case.service.ts` (e.g., `auth.service.ts`)
@@ -72,6 +77,7 @@ components/
 - **Utils**: `kebab-case.ts` (e.g., `format-date.ts`)
 
 ### **Import Organization**
+
 ```typescript
 // 1. React imports
 import React from 'react';
@@ -97,6 +103,7 @@ import './component.css';
 ### **1. Authentication System**
 
 #### **Files to Know**
+
 - `src/store/auth-store.ts` - Authentication state management
 - `src/hooks/use-auth.ts` - Main authentication hook
 - `src/services/auth/auth.service.ts` - Authentication API service
@@ -104,6 +111,7 @@ import './component.css';
 - `src/lib/validations/auth.ts` - Authentication form validation
 
 #### **Usage Examples**
+
 ```typescript
 // Using auth hook
 const { user, isAuthenticated, login, logout } = useAuth();
@@ -127,6 +135,7 @@ const AuthGuard = ({ children }) => {
 ## 🔄 **Auto-Update Information**
 
 This document is automatically updated when:
+
 - New development patterns are added
 - Dependencies are updated
 - Configuration changes are made

@@ -1,4 +1,5 @@
-@utility page-wrapper {
+/* @layer utilities {
+  .page-wrapper {
   margin-left: 270px;
   transition: 0.2s ease-in;
 }
@@ -7,8 +8,9 @@
   margin-left: 80px;
 }
 
-@media screen and (max-width: 1279px) {
-  .page-wrapper {
-    margin-left: 0;
+  @media screen and (max-width: 1279px) {
+    .page-wrapper {
+      margin-left: 0;
+    }
   }
-}
+} */

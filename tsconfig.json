@@ -53,7 +53,7 @@
 
       // Component architecture (Atomic Design)
       "@/components/*": ["./src/components/*"], // All UI components
-      "@/ui/*": ["./src/components/ui/*"], // ShadCN UI components (atoms)
+      "@/design-system": ["./src/components/ui"],
       "@/molecules/*": ["./src/components/molecules/*"], // Atomic design molecules
       "@/organisms/*": ["./src/components/organisms/*"], // Atomic design organisms
       "@/templates/*": ["./src/components/templates/*"], // Page templates
@@ -75,7 +75,6 @@
       // Infrastructure
       "@/middleware/*": ["./src/middleware/*"], // Next.js middleware
       "@/security/*": ["./src/security/*"], // Security utilities and validations
-      "@/context/*": ["./src/context/*"], // React Context providers
       "@/styles/*": ["./src/styles/*"], // Global styles and CSS
       "@/utils/*": ["./src/utils/*"] // Additional utility functions
     },

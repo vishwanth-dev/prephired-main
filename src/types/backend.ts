@@ -99,6 +99,17 @@ export interface IPermissions {
 }
 
 /**
+ * Permission Check Interface
+ * For checking specific permissions
+ */
+export interface IPermissionCheck {
+  hasPermission: boolean;
+  module: string;
+  action: string;
+  reason?: string;
+}
+
+/**
  * Tenant Model Interface
  * Based on backend tenants collection
  */
