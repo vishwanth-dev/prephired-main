@@ -1,6 +1,6 @@
-/* src/styles/app.css */
+/* src/app/globals.css */
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ========================================
    EXTEND TAILWIND'S THEME
@@ -24,14 +24,22 @@
   --color-error: #ff6347;
   --color-info: #645fff;
 
+  /* OTP Component Colors */
+  --color-otp-bg: rgba(230, 102, 26, 0.02);
+  --color-otp-border: #c8c8c8;
+  --color-otp-text-muted: #989898;
+  --color-otp-resend: #f35427;
+
   /* Custom radius from Figma */
   --radius-button: 3.125rem;
   --radius-input: 3.75rem;
   --radius-card: 1.25rem;
+  --radius-otp: 0.408rem; /* 6.53px converted to rem */
 
   /* Custom shadows from Figma */
   --shadow-card: 0px 4px 20px 0px rgb(144 144 144 / 0.2);
   --shadow-figma: -9px 14px 96px 0px rgb(0 0 0 / 0.08);
+  --shadow-otp-focus: 0 0 0 3px rgb(240 128 108 / 0.2);
 }
 
 /* ========================================
@@ -58,10 +66,17 @@
   --border: #dfdfdf;
   --input: #dfdfdf;
   --ring: #f0806c;
-  
+
+  /* OTP Component Specific */
+  --otp-input-bg: rgba(230, 102, 26, 0.02);
+  --otp-input-border: #c8c8c8;
+  --otp-text-muted: #989898;
+  --otp-resend-color: #f35427;
+  --otp-resend-hover: #d94820;
+
   /* Radius */
   --radius: 0.5rem;
-  
+
   /* Sidebar (if needed) */
   --sidebar: #ffffff;
   --sidebar-foreground: #363848;
@@ -93,7 +108,14 @@
   --border: #3a3a3a;
   --input: #3a3a3a;
   --ring: #fb9b8a;
-  
+
+  /* OTP Component Dark Mode */
+  --otp-input-bg: rgba(251, 155, 138, 0.05);
+  --otp-input-border: #4a4a4a;
+  --otp-text-muted: #6a6a6a;
+  --otp-resend-color: #fb9b8a;
+  --otp-resend-hover: #ffa694;
+
   /* Sidebar dark */
   --sidebar: #1f2124;
   --sidebar-foreground: #e8eaed;
@@ -112,11 +134,15 @@
   * {
     border-color: var(--border);
   }
-  
+
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-family:
+      'Poppins',
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 }
 
@@ -131,6 +157,10 @@
 
 @utility animate-slide-up {
   animation: slide-up 0.3s ease-out;
+}
+
+@utility animate-shake {
+  animation: shake 0.5s ease-in-out;
 }
 
 /* Layout utilities */
@@ -152,25 +182,101 @@
   border-radius: var(--radius-card);
 }
 
+@utility rounded-otp {
+  border-radius: var(--radius-otp);
+}
+
 @utility shadow-card {
   box-shadow: var(--shadow-card);
+}
+
+@utility shadow-otp-focus {
+  box-shadow: var(--shadow-otp-focus);
+}
+
+/* OTP Input specific utilities */
+@utility bg-otp-input-bg {
+  background-color: var(--otp-input-bg);
+}
+
+@utility border-otp {
+  border-color: var(--otp-input-border);
+}
+
+@utility text-otp-muted {
+  color: var(--otp-text-muted);
+}
+
+@utility text-otp-resend {
+  color: var(--otp-resend-color);
+}
+
+@utility text-otp-resend-hover {
+  color: var(--otp-resend-hover);
 }
 
 /* ========================================
    KEYFRAMES
    ======================================== */
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slide-up {
-  from { 
+  from {
     transform: translateY(10px);
     opacity: 0;
   }
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

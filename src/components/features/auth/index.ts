@@ -31,42 +31,18 @@ export {
 // 🎨 AUTH ILLUSTRATION COMPONENTS
 // ============================================
 
-export {
-  default as AuthIllustration,
-  LoginIllustration,
-  RegisterIllustration,
-  ForgotPasswordIllustration,
-  ResetPasswordIllustration,
-  VerifyOTPIllustration,
-} from './auth-illustration';
+
 
 // ============================================
 // 🔒 PASSWORD STRENGTH COMPONENTS
 // ============================================
 
-export {
-  default as PasswordStrength,
-  PasswordStrengthIndicator,
-  CompactPasswordStrength,
-  DetailedPasswordStrength,
-} from './password-strength';
+
 
 // ============================================
 // 🌐 SOCIAL LOGIN COMPONENTS
 // ============================================
 
-export {
-  default as SocialLogin,
-  HorizontalSocialLogin,
-  VerticalSocialLogin,
-  GridSocialLogin,
-} from './social-login';
-
-// ============================================
-// 🎯 TYPE EXPORTS
-// ============================================
-
-export type { SocialProvider } from './social-login';
 
 // ============================================
 // 📋 COMPONENT INFO

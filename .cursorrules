@@ -1,0 +1,339 @@
+# PrepAI Project Rules for Cursor AI
+
+## 🎯 Project Context
+
+You are working on **PrepAI**, a comprehensive AI-powered interview platform that conducts real-time voice interviews with dynamic question generation derived directly from candidate resumes.
+
+## 🏗️ Architecture Overview
+
+### Technology Stack
+
+- **Frontend**: Next.js 15 + React 19 + TypeScript
+- **Backend**: Node.js + Express + TypeScript + MongoDB
+- **Styling**: TailwindCSS + ShadCN UI
+- **State Management**: Zustand + Context API
+- **Forms**: React Hook Form + Zod validation
+- **API Client**: Axios + TanStack Query
+- **Authentication**: JWT + NextAuth
+- **AI Integration**: OpenAI API
+- **Database**: MongoDB + Mongoose
+
+### Project Structure
+
+```
+prephired-main/          # Frontend (Next.js)
+├── src/
+│   ├── app/             # App Router pages
+│   ├── components/      # React components
+│   ├── hooks/           # Custom React hooks
+│   ├── services/        # API services
+│   ├── store/           # Zustand stores
+│   ├── types/           # TypeScript types
+│   └── utils/           # Utility functions
+
+prepAiBE/                # Backend (Node.js)
+├── src/
+│   ├── modules/         # Feature modules
+│   ├── services/        # Business logic
+│   ├── middlewares/     # Express middlewares
+│   └── utils/           # Utility functions
+```
+
+## 📋 Development Standards
+
+### File Naming Conventions
+
+- **Components**: `PascalCase.tsx` (e.g., `UserProfile.tsx`)
+- **Hooks**: `use-kebab-case.ts` (e.g., `use-auth-guard.ts`)
+- **Services**: `kebab-case.service.ts` (e.g., `auth.service.ts`)
+- **Types**: `kebab-case.ts` (e.g., `user-types.ts`)
+- **Utils**: `kebab-case.ts` (e.g., `format-date.ts`)
+
+### Import Organization
+
+```typescript
+// 1. React imports
+import React from 'react';
+import { useState, useEffect } from 'react';
+
+// 2. Third-party imports
+import { z } from 'zod';
+import axios from 'axios';
+
+// 3. Internal imports (absolute paths)
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/use-auth';
+import { authService } from '@/services/auth';
+
+// 4. Relative imports
+import './component.css';
+```
+
+### TypeScript Standards
+
+- Use interfaces for object shapes
+- Use types for unions and computed types
+- Use enums for constants
+- Always provide proper type annotations
+- Use strict TypeScript configuration
+
+## 🎯 Key Features
+
+### 1. Authentication System
+
+- User registration with email verification
+- OTP-based verification
+- Role-based access control (Admin, User, Interviewer)
+- JWT token management with refresh tokens
+- Password reset functionality
+
+### 2. Resume Analysis
+
+- AI-powered resume parsing
+- Skills extraction and analysis
+- Job matching recommendations
+- Resume optimization suggestions
+
+### 3. Interview Management
+
+- Dynamic question generation from resumes
+- Voice-based interview sessions
+- Real-time interview monitoring
+- Interview scheduling and management
+- Results analysis and reporting
+
+### 4. Multi-Tenant Support
+
+- Subdomain-based tenant isolation
+- Tenant-specific configurations
+- Role-based permissions per tenant
+- Tenant management dashboard
+
+## 🔧 Code Patterns
+
+### React Component Pattern
+
+```typescript
+'use client';
+
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+// Define schema
+const schema = z.object({
+  // schema definition
+});
+
+type FormData = z.infer<typeof schema>;
+
+export const ComponentName: React.FC = () => {
+  const form = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      // default values
+    },
+  });
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      // handle submission
+    } catch (error) {
+      // handle error
+    }
+  };
+
+  return (
+    <div>
+      {/* component JSX */}
+    </div>
+  );
+};
+
+export default ComponentName;
+```
+
+### Zustand Store Pattern
+
+```typescript
+import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+
+interface State {
+  // state properties
+}
+
+interface Actions {
+  // action methods
+}
+
+export const useStore = create<State & Actions>()(
+  devtools(
+    persist(
+      immer((set, get) => ({
+        // initial state
+        // actions
+      })),
+      { name: 'store-name' }
+    )
+  )
+);
+```
+
+### API Service Pattern
+
+```typescript
+import axios from 'axios';
+
+export class ServiceName {
+  private baseURL = process.env.NEXT_PUBLIC_API_URL;
+
+  async methodName(data: any): Promise<any> {
+    const response = await axios.post(`${this.baseURL}/endpoint`, data);
+    return response.data;
+  }
+}
+
+export const serviceInstance = new ServiceName();
+```
+
+### Backend Controller Pattern
+
+```typescript
+export class ControllerName {
+  constructor(private service: ServiceName) {}
+
+  async methodName(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = req.body;
+      const result = await this.service.methodName(data);
+
+      res.status(200).json({
+        success: true,
+        message: 'Success message',
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+```
+
+## 🎨 UI/UX Guidelines
+
+### Design System
+
+- Use ShadCN UI components as base
+- Follow TailwindCSS utility classes
+- Maintain consistent spacing and typography
+- Use the established color palette:
+  - Primary: `#F0806C`
+  - Secondary: `#F35427`
+  - Text: `#363848`
+  - Muted: `#626262`
+
+### Component Structure
+
+- Use atomic design principles
+- Create reusable components
+- Implement proper error boundaries
+- Add loading states for async operations
+- Use proper accessibility attributes
+
+## 🔒 Security Guidelines
+
+### Authentication
+
+- Always validate JWT tokens
+- Use HTTPS in production
+- Implement proper CORS policies
+- Sanitize user inputs
+- Use environment variables for secrets
+
+### Data Protection
+
+- Hash passwords with bcrypt
+- Validate all inputs with Zod schemas
+- Implement rate limiting
+- Use proper error handling
+- Log security events
+
+## 🧪 Testing Standards
+
+### Frontend Testing
+
+- Use React Testing Library
+- Test user interactions
+- Mock API calls
+- Test error states
+- Test loading states
+
+### Backend Testing
+
+- Use Jest and Supertest
+- Test API endpoints
+- Test business logic
+- Test error handling
+- Test authentication
+
+## 📚 Documentation
+
+### Code Documentation
+
+- Add JSDoc comments for functions
+- Document complex business logic
+- Use meaningful variable names
+- Add inline comments for complex operations
+
+### API Documentation
+
+- Document all endpoints
+- Include request/response examples
+- Document error codes
+- Include authentication requirements
+
+## 🚀 Deployment
+
+### Environment Variables
+
+- Use `.env.local` for frontend
+- Use `.env` for backend
+- Never commit secrets to version control
+- Use different environments for dev/staging/prod
+
+### Build Process
+
+- Use TypeScript compilation
+- Run linting and formatting
+- Run tests before deployment
+- Use proper build optimization
+
+## 🎯 Response Guidelines
+
+When responding to queries about this project:
+
+1. **Always consider the full-stack nature** - Mention both frontend and backend implications
+2. **Use the established patterns** - Follow the code patterns shown above
+3. **Consider security** - Always think about security implications
+4. **Think about scalability** - Consider multi-tenant architecture
+5. **Use proper TypeScript** - Always provide type-safe solutions
+6. **Follow the design system** - Use established UI components and patterns
+7. **Consider the AI integration** - Think about how AI features integrate
+8. **Think about real-time features** - Consider live updates and notifications
+
+## 🔄 Update Process
+
+This file should be updated when:
+
+- New patterns are established
+- Architecture changes
+- New features are added
+- Security requirements change
+- Development standards evolve
+
+---
+
+**Remember**: Always provide solutions that are consistent with the PrepAI project architecture, patterns, and standards. Consider the full-stack nature of the application and provide comprehensive solutions that work across both frontend and backend.

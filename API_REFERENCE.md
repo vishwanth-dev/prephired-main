@@ -1,6 +1,6 @@
 # 🔌 PrepAI API Reference
 
-> **Last Updated**: 2025-09-06  
+> **Last Updated**: 2025-09-08  
 > **Auto-Generated**: This document is automatically updated when files are added/modified
 
 ## 📋 **API Overview**
@@ -11,6 +11,14 @@ The PrepAI API provides comprehensive endpoints for authentication, user managem
 - **Development**: `http://localhost:5000/api`
 - **Production**: `https://api.prephired.com`
 - **Widget API**: `https://widget.prephired.com/api`
+
+### **API Services Available**
+- **Auth Service**: User authentication and session management
+- **User Service**: User profile and account management
+- **Resume Service**: Resume upload, analysis, and optimization
+- **Tenant Service**: Multi-tenant organization management
+- **Group Service**: User group and team management
+- **Role Service**: Role-based access control
 
 ### **Authentication**
 All protected endpoints require a Bearer token in the Authorization header:
@@ -116,7 +124,7 @@ This document is automatically updated when:
 - Request/response schemas change
 - Error handling is updated
 
-**Last Auto-Update**: 2025-09-06T07:31:01.750Z  
+**Last Auto-Update**: 2025-09-08T15:56:47.596Z  
 **Update Trigger**: API file changes  
 **Next Update**: On next API modification
 
